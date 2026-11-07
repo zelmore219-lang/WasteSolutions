@@ -1,4 +1,10 @@
-# Windows local test download
+# Windows testing
+
+The user now prefers the **Firebase-hosted client without Docker**. Its separate `CoreWaste-Firebase-Windows-0.2.0-x64.zip` contains a portable EXE and startup instructions, prefilled for the intended Firebase website. Live services and accessible delivery are pending; billing will be enabled later. See [Firebase release preparation](FIREBASE_RELEASE.md).
+
+The older full local kit below remains an optional Docker-based development path.
+
+## Optional local test download
 
 The version 0.2.0 Windows x64 kit bundles the CoreWaste office app, compiled API, PostgreSQL and an isolated Firebase identity emulator. It supports local business testing without activating the live Firebase project. Install Docker Desktop with Linux containers first; Node.js and a live server are not required.
 

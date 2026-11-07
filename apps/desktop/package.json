@@ -24,7 +24,8 @@
       "setup.js",
       "setup.css",
       "package.json",
-      "local-test.cjs"
+      "local-test.cjs",
+      "hosted.cjs"
     ],
     "win": {
       "target": "nsis",

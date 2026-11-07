@@ -60,3 +60,7 @@ Development workflow details: CONTRACT_BILLING.md, EQUIPMENT_STOCK.md, PAYABLES.
 ## Windows local testing, version 0.2.0
 
 A full local Windows test kit bundles the office client, API, PostgreSQL and isolated demo identity. Customer-to-payment workflows and clean restart persistence passed Linux/Docker/Chromium checks; ten desktop tests pass. Docker Desktop is required. Actual Windows/device acceptance, signing and accessible download hosting remain pending. See [Windows testing](WINDOWS_TEST.md).
+
+## Firebase-hosted Windows direction
+
+Firebase production client configuration and Hosting-to-Cloud-Run API routing are prepared. The Windows client pre-fills the intended Firebase URL and checks API/database health before opening it, without Docker on the user’s computer. The user plans to enable billing later; real cloud deployment, sign-in/MFA, PostgreSQL/bucket provisioning, installed Windows acceptance and accessible delivery remain pending. See [Firebase release](FIREBASE_RELEASE.md).

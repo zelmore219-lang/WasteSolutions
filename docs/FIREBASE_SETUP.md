@@ -17,3 +17,7 @@ There is no configured GCP outbound identity or GOOGLE_APPLICATION_CREDENTIALS v
 The driver build uses EXPO_PUBLIC_FIREBASE_PROJECT_ID, EXPO_PUBLIC_FIREBASE_API_KEY and EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN with the same Firebase project values. EXPO_PUBLIC_API_URL must point to the deployed HTTPS CoreWaste API including its /api prefix. Native application IDs, signing and Firebase provider settings must be accepted on installed devices.
 
 Tests use a separate demo-corewaste Firebase Auth emulator and dedicated PostgreSQL test database. Explicit test subprocess variables prevent the emulator from ever connecting to the real project. Emulator use is rejected for production or a non-demo project.
+
+## Hosted release preparation
+
+The public web settings now live in `config/firebase-client.json`; `scripts/build-firebase-web.cjs` builds the Firebase release while disabling emulator flags. `firebase.hosting.json` adds Cloud Run API rewrites and SPA hosting. See [Firebase release preparation](FIREBASE_RELEASE.md) for guarded deployment commands and the Windows client without Docker. The owner confirmed billing is not enabled yet and will be enabled later. No paid resources, live authentication settings or deployment were changed.

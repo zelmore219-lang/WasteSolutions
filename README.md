@@ -4,6 +4,10 @@ CoreWaste's single-company waste operations system. React/TypeScript office and 
 
 **Development milestone, not a finished or production-ready system.** See [feature and acceptance status](docs/FEATURES.md), [architecture](docs/ARCHITECTURE.md), and [deployment requirements](docs/DEPLOYMENT.md). No sample customer records or simulated payment success are installed.
 
+## Firebase-hosted Windows client
+
+The current direction is Firebase sign-in/Hosting with the API on Cloud Run and PostgreSQL. The preconfigured Windows client requires no Docker on the user’s computer. See [Firebase release preparation](docs/FIREBASE_RELEASE.md). Cloud activation and download hosting are pending; the owner plans to enable billing later.
+
 ## Windows local test kit
 
 The 0.2.0 full test kit includes local services and test sign-ins; Docker Desktop with Linux containers is required. See [Windows download and startup instructions](docs/WINDOWS_TEST.md). A public download and actual Windows-machine acceptance remain pending.

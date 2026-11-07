@@ -5,6 +5,7 @@ const { validateTarget, readTarget, saveTarget } = require("./connection.cjs");
 const { LocalTestController, LOCAL_URL } = require("./local-test.cjs");
 const setupFile = path.join(__dirname, "setup.html"),
   setupUrl = pathToFileURL(setupFile).href;
+const { HOSTED_URL, verifyFirebaseHost } = require("./hosted.cjs");
 const localTest = (process.argv || []).includes("--local-test");
 const development = !app.isPackaged && process.env.NODE_ENV === "development";
 const kitDir = localTest
@@ -75,12 +76,14 @@ async function connect(target) {
     await officeWindow.loadURL(LOCAL_URL);
     return;
   }
-  allowedOrigin = new URL(url).origin;
   try {
+    await verifyFirebaseHost(url);
+    allowedOrigin = new URL(url).origin;
     await window.loadURL(url);
-  } catch {
+  } catch (error) {
     await showSetup(
-      "Could not connect. Check the address, internet connection, and whether your CoreWaste server is running.",
+      error.message ||
+        "Could not connect. Check the address, internet connection, and whether your CoreWaste server is running.",
     );
   }
 }
@@ -113,7 +116,9 @@ app.whenReady().then(async () => {
   ipcMain.handle("corewaste:connection", (event) => {
     setupAuthority(event);
     return {
-      url: localTest ? LOCAL_URL : readTarget(app.getPath("userData")),
+      url: localTest
+        ? LOCAL_URL
+        : readTarget(app.getPath("userData")) || HOSTED_URL,
       local_test: localTest,
     };
   });

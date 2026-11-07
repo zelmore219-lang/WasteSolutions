@@ -1,5 +1,16 @@
 # Validation evidence
 
+## Firebase-hosted client preparation — November 7, 2026
+
+Firebase production web build and API/web/driver TypeScript checks passed. Twelve desktop tests pass, including rejection of Firebase welcome HTML, HTTP failures, unhealthy database responses and network failure; the health request forbids redirects and checks the CoreWaste API identity. Existing setup IPC isolation, local test controls and sandbox tests remain passing. Two emulator-mode guard tests also pass.
+
+A Chromium check of the Firebase production build rendered office sign-in with zero page errors and zero emulator requests. Rebuilding with hostile inherited `VITE_USE_AUTH_EMULATOR=true`, `VITE_LOCAL_TEST_KIT=true` and a demo project still produced the production sign-in without emulator requests. No real-project credentials were submitted and live sign-in/MFA was not tested. Current packaged ASAR source bytes match the reviewed desktop source. Logs: `/tmp/corewaste-firebase-desktop.log`, `/tmp/corewaste-firebase-types.log`, `/tmp/corewaste-firebase-identity-guards.log`, `/tmp/corewaste-firebase-final-web-build.log`, `/tmp/corewaste-firebase-final-windows-build.log`.
+
+The final Windows portable build succeeded. `CoreWaste-Firebase-Windows-0.2.0-x64.zip` is **109,908,461 bytes**, SHA256 `8c616e5b8ffbef6478a5f42abb844aafe684825bc6a796c705bc425aa43c8869`. Archive CRCs passed and the strict package contains only the EXE and startup instructions. GitHub publishing was rechecked and also returned proxy CONNECT403.
+
+The owner confirmed Firebase billing is not enabled and will be enabled later. The enforced environment policy blocks Firebase management access (fresh curl request: proxy CONNECT403); no ready Google Cloud identity is available. Hosting/API/database/storage activation, real employee access, Windows machine acceptance and accessible download delivery remain pending. No cloud resources, paid services, environment settings or live project configuration were changed. [Release preparation](FIREBASE_RELEASE.md) documents the remaining activation requirements.
+
+
 ## Windows local test kit — November 7, 2026
 
 The final API/web/driver type checks and builds passed. Backend regression: **167 passed, zero failed/skipped** (`/tmp/corewaste-download-backend.log`); identity regression: **2 passed** (`/tmp/corewaste-download-identity.log`). Browser regression: **27 passed** (`/tmp/corewaste-download-browser-rerun.log`). The first run passed26 and timed out when the test helper reloaded during asynchronous sign-out; keeping the current office page until sign-out completes corrected the helper, and the full rerun passed. Controls renderer start/open/stop, escaped sign-ins and MFA-code display passed in Chromium with zero page errors (mocked desktop bridge).

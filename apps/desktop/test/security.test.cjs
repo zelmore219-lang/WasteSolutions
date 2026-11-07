@@ -61,15 +61,17 @@ test("desktop starts in setup and rejects settings IPC and cross-origin navigati
       require: (name) =>
         name === "electron"
           ? electron
-          : name === "./local-test.cjs"
-            ? require("../local-test.cjs")
-            : name === "./connection.cjs"
-              ? {
-                  ...require("../connection.cjs"),
-                  readTarget: () => "",
-                  saveTarget: () => {},
-                }
-              : require(name),
+          : name === "./hosted.cjs"
+            ? require("../hosted.cjs")
+            : name === "./local-test.cjs"
+              ? require("../local-test.cjs")
+              : name === "./connection.cjs"
+                ? {
+                    ...require("../connection.cjs"),
+                    readTarget: () => "",
+                    saveTarget: () => {},
+                  }
+                : require(name),
     },
   );
   await ready();
@@ -97,7 +99,10 @@ test("desktop starts in setup and rejects settings IPC and cross-origin navigati
       url: pathToFileURL(path.join(directory, "setup.html")).href + "?message=",
     },
   };
-  assert.equal(handlers.get("corewaste:connection")(local).url, "");
+  assert.equal(
+    handlers.get("corewaste:connection")(local).url,
+    "https://wastesoloutions.web.app/office",
+  );
   assert.equal(
     (await handlers.get("corewaste:connect")(local, "http://localhost:5173"))
       .ok,
@@ -200,11 +205,16 @@ test("local testing IPC is confined to its controls frame and the office window 
       require: (name) =>
         name === "electron"
           ? electron
-          : name === "./local-test.cjs"
-            ? { LocalTestController, LOCAL_URL: "http://127.0.0.1:8088/office" }
-            : name === "./connection.cjs"
-              ? { ...require("../connection.cjs"), readTarget: () => "" }
-              : require(name),
+          : name === "./hosted.cjs"
+            ? require("../hosted.cjs")
+            : name === "./local-test.cjs"
+              ? {
+                  LocalTestController,
+                  LOCAL_URL: "http://127.0.0.1:8088/office",
+                }
+              : name === "./connection.cjs"
+                ? { ...require("../connection.cjs"), readTarget: () => "" }
+                : require(name),
     },
   );
   await ready();

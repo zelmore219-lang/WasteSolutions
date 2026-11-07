@@ -19,6 +19,17 @@ jobs:
       - run: npm run package:windows:portable -w @corewaste/desktop
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - run: python3 scripts/package-firebase-windows.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CoreWaste-Firebase-Windows-0.2.0-x64-UNSIGNED
+          path: |
+            .local/firebase-download/*.zip
+            .local/firebase-download/*.sha256
+          include-hidden-files: true
+          retention-days: 14
+          compression-level: 0
+          if-no-files-found: error
       - run: bash scripts/build-local-test-images.sh
       - run: node scripts/package-windows-test-kit.cjs
       - run: npx playwright install --with-deps chromium

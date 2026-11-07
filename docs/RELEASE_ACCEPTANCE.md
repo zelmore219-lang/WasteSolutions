@@ -1,6 +1,6 @@
 # CoreWaste release acceptance
 
-Passing local tests does not complete activation or establish production readiness. The user has deferred Firebase setup until software work is complete. No live resources, charges, messages, exports, publication or deployment are performed by the local build/test commands.
+Passing local tests does not complete activation or establish production readiness. The user now requests Firebase integration; public client/Hosting preparation is in place. The user confirmed billing is not enabled and plans to enable it later. Cloud Run/PostgreSQL activation remains pending. No live resources, charges, messages, exports, publication or deployment are performed by the local build/test commands.
 
 ## Required external setup and acceptance
 
@@ -22,3 +22,7 @@ The 0.2.0 full local kit now includes the API, database, office web app and test
 No working public download has been verified. GitHub delivery is blocked by denied `api.github.com` access in this environment. The manual download workflow and archive are prepared, but have not been published or run remotely. An internal workspace link is not a verified download.
 
 These outstanding requirements must remain visible. Do not label an unfinished or externally unverified build as 100% complete.
+
+## Firebase client release preparation
+
+The Windows client is preconfigured for the intended Firebase host and needs no Docker on the user’s computer. It rejects a Firebase welcome page or unhealthy API. Public client configuration, a production web build, API rewrites, private-storage rules template, and guarded Cloud Run migration/deployment scripts are prepared. Actual hosting, authentication/MFA, database/bucket setup, Windows acceptance and downloadable delivery are still pending. See [Firebase release](FIREBASE_RELEASE.md).

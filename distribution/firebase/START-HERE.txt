@@ -1,0 +1,23 @@
+COREWASTE — FIREBASE WINDOWS CLIENT 0.2.0 (x64)
+
+This client uses your hosted CoreWaste system. Docker Desktop is NOT required.
+
+1. Extract the ZIP into a writable folder.
+2. Open CoreWaste-Firebase-0.2.0-x64.exe.
+3. The Firebase address is already filled in:
+   https://wastesoloutions.web.app/office
+4. Choose Connect AFTER the cloud services have been activated.
+5. Sign in with your verified, provisioned employee account. Administrators need MFA.
+
+ACTIVATION STATUS AT BUILD TIME: PENDING.
+The Firebase client settings are included. Live Hosting, Cloud Run API, PostgreSQL,
+private file storage, employee provisioning and sign-in acceptance are not verified.
+A client download cannot activate these cloud services. The client refuses a
+Firebase welcome page or an unhealthy API instead of treating it as a working app.
+
+This is an unsigned development build, built on Linux. Actual Windows startup and
+installation remain unverified. Do not disable Windows protection settings to run
+it. Live payments and external providers are separate activation steps.
+
+Internet access is required. This package contains no database, local Docker kit,
+passwords, service-account credentials or customer records.

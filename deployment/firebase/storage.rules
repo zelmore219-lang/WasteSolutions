@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{path=**} {
+      // Files are authorized by the API against employee/customer ownership.
+      // Admin GCS access uses IAM and is not controlled by these client rules.
+      allow read, write: if false;
+    }
+  }
+}
