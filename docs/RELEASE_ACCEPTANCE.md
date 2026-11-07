@@ -15,8 +15,10 @@ Passing local tests does not complete activation or establish production readine
 - Migration/business acceptance: supply authorized source exports and reviewed cutover totals. Historical source lookup does not imply historical ledger conversion. Review contract/fee/tax/amendment policy, expense attribution, physical yard counts, real schedules and all eight required end-to-end scenarios with company operators.
 - Security/operations: resolve or accept documented dependency findings through supported upstream versions, review deployed roles/configuration, perform representative load and cloud recovery tests, and complete operational ownership/runbooks.
 
-## Windows download limitation
+## Windows test-kit status
 
-The previously generated workspace ZIP is an unsigned connection client and cannot run the database/server by itself. A workspace file link was not a usable download for the user. No working public download or Windows machine run has been verified. GitHub Releases delivery currently cannot be performed from this environment because `api.github.com` access was denied. Do not repeat the internal workspace link as a verified download or imply that the ZIP provides full business testing before a test server/account exists.
+The 0.2.0 full local kit now includes the API, database, office web app and test identity emulator, rather than only the earlier connection client. Docker Desktop with Linux containers is required. Business workflows and clean restart persistence passed Linux/Docker/Chromium validation; Windows execution, signing and real devices remain pending. See [Windows testing](WINDOWS_TEST.md).
+
+No working public download has been verified. GitHub delivery is blocked by denied `api.github.com` access in this environment. The manual download workflow and archive are prepared, but have not been published or run remotely. An internal workspace link is not a verified download.
 
 These outstanding requirements must remain visible. Do not label an unfinished or externally unverified build as 100% complete.

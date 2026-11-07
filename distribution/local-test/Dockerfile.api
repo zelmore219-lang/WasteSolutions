@@ -1,0 +1,5 @@
+ARG COREWASTE_API_IMAGE=corewaste-api:development
+FROM ${COREWASTE_API_IMAGE}
+USER root
+RUN mkdir -p /app/local-test-uploads && chown node:node /app/local-test-uploads
+USER node

@@ -1,26 +1,93 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
-<title>CoreWaste — Connect</title>
-<link rel="stylesheet" href="setup.css">
-</head>
-<body>
-<main>
-  <div class="brand">CoreWaste <span>Windows test client · 0.1.0</span></div>
-  <h1>Connect to CoreWaste</h1>
-  <p>Enter the secure website address for your CoreWaste test server.</p>
-  <form id="connection">
-    <label for="server">CoreWaste server address</label>
-    <input id="server" type="url" placeholder="https://your-corewaste-server/office" autocomplete="url" required>
-    <button id="connect" type="submit">Connect</button>
-  </form>
-  <p id="message" role="status" aria-live="polite"></p>
-  <aside><strong>Before you test</strong><p>This client connects to a running CoreWaste system. It does not include the database or server. A configured test server and a provisioned test account are required to sign in and test business workflows.</p><p>Server setup and Firebase activation are still pending. If you have not received a test server address, keep this installer for the next testing step.</p></aside>
-  <p class="hint">To change the address later, choose Connection → Change server.</p>
-</main>
-<script src="setup.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
+    <title>CoreWaste — Connect</title>
+    <link rel="stylesheet" href="setup.css" />
+  </head>
+  <body>
+    <main>
+      <div class="brand">
+        CoreWaste <span>Windows test client · 0.2.0</span>
+      </div>
+      <h1>Connect to CoreWaste</h1>
+      <p>Enter the secure website address for your CoreWaste test server.</p>
+      <form id="connection">
+        <label for="server">CoreWaste server address</label>
+        <input
+          id="server"
+          type="url"
+          placeholder="https://your-corewaste-server/office"
+          autocomplete="url"
+          required
+        />
+        <button id="connect" type="submit">Connect</button>
+      </form>
+      <p id="message" role="status" aria-live="polite"></p>
+      <section id="local-test" hidden>
+        <h2>Run CoreWaste on this computer</h2>
+        <p>
+          Use Docker Desktop with Linux containers. This kit includes the
+          server, an isolated database and test sign-ins; live Firebase setup is
+          not required for local testing.
+        </p>
+        <p id="local-status" role="status" aria-live="polite"></p>
+        <div class="buttons">
+          <button id="local-start" type="button">Start local test system</button
+          ><button id="local-open" type="button" disabled>Open CoreWaste</button
+          ><button id="local-stop" type="button">Stop local services</button>
+        </div>
+        <h3>Test sign-ins</h3>
+        <p>
+          Generated passwords stay on your computer. Use these only for this
+          isolated test installation.
+        </p>
+        <button id="local-logins" type="button">
+          Show local test sign-ins
+        </button>
+        <div id="local-logins-output"></div>
+        <h3>Owner verification code</h3>
+        <p>
+          The owner must pass MFA. In the app choose Send verification code,
+          then show the local test code here. No real text message is sent.
+        </p>
+        <button id="local-codes" type="button">Show local sign-in code</button>
+        <p id="local-code-output" role="status"></p>
+        <aside>
+          <strong>Local testing only</strong>
+          <p>
+            Use test customer information. Payments, QuickBooks, email/text
+            delivery and live road planning are disabled. Your test work is
+            stored locally and survives Stop/Start. Keep the local-test/.state
+            folder with this kit. Closing the windows does not stop the
+            containers; use Stop local services before closing when you are
+            finished.
+          </p>
+        </aside>
+      </section>
+      <aside id="hosted-help">
+        <strong>Before you test</strong>
+        <p>
+          This client connects to a running CoreWaste system. It does not
+          include the database or server. A configured test server and a
+          provisioned test account are required to sign in and test business
+          workflows.
+        </p>
+        <p>
+          Server setup and Firebase activation are still pending. If you have
+          not received a test server address, keep this installer for the next
+          testing step.
+        </p>
+      </aside>
+      <p id="hosted-hint" class="hint">
+        To change the address later, choose Connection → Change server.
+      </p>
+    </main>
+    <script src="setup.js"></script>
+  </body>
 </html>

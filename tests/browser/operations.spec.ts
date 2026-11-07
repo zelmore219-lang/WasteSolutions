@@ -33,7 +33,9 @@ async function account(role: string) {
   return { email, password, id: employee.id, uid: user.localId };
 }
 async function login(page: Page, user: { email: string; password: string }) {
-  await page.goto("/office");
+  // Keep the current page while an asynchronous sign-out finishes. Reloading
+  // here can restore the previous persisted identity before sign-out commits.
+  if (new URL(page.url()).pathname !== "/office") await page.goto("/office");
   await page.getByLabel("Work email or employee username").fill(user.email);
   await page.getByLabel("Password", { exact: true }).fill(user.password);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();

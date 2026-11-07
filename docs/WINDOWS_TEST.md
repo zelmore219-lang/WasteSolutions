@@ -1,30 +1,38 @@
-# Windows test download
+# Windows local test download
 
-## What this build can test
+The version 0.2.0 Windows x64 kit bundles the CoreWaste office app, compiled API, PostgreSQL and an isolated Firebase identity emulator. It supports local business testing without activating the live Firebase project. Install Docker Desktop with Linux containers first; Node.js and a live server are not required.
 
-The current downloadable Windows x64 client can open the connection screen, save an HTTPS CoreWaste server address, and connect to that server. It is not a standalone installation of the server/database, and it contains no credentials, default account, or sample business records.
+## Start on Windows
 
-A reachable CoreWaste test server and a provisioned test account are still needed to test dispatching, billing, inventory, and other authenticated workflows. Firebase activation and externally reachable server setup remain pending. Do not mistake the client download for completion of the application or a ready-to-use business system.
+1. Download `CoreWaste-Windows-Local-Test-0.2.0-x64.zip` and choose **Extract All** into a writable folder.
+2. Start Docker Desktop in Linux-container mode.
+3. Double-click **Start-CoreWaste.cmd**, then **Start local test system**. Initial image import may take several minutes.
+4. When Ready appears, choose **Show local test sign-ins**, then **Open CoreWaste**.
+5. Use the generated owner, dispatcher, accountant or driver account. Owner sign-in requires MFA: request a code in the app, then use **Show local sign-in code** in the separate controls window.
+6. Choose **Stop local services** when finished. Closing the windows alone leaves services running.
 
-## Open the portable download
+Use test information only. Customer, job and financial records start empty; four clearly identified test accounts and one test truck are provisioned. Live payments, QuickBooks, external message delivery and live road planning are disabled. This loopback-only kit is not a phone/LAN server or production installation.
 
-1. Download `CoreWaste-Windows-Test-0.1.0-x64.zip`.
-2. Right-click the ZIP and choose **Extract All**. Keep the extracted files together.
-3. Open **CoreWaste.exe** in the extracted folder.
-4. When a test server address is supplied, enter it on the connection screen and choose **Connect**. Do not enter a Firebase project address; this field needs the hosted CoreWaste web application's URL.
-5. Use **Connection → Change server** to update the address later.
+Preserve `local-test/.state` and the installation's Docker volumes. State contains generated passwords and private configuration; do not upload it. Clean Stop saves emulator identities before stopping services and preserves database/uploads. If the save fails, Stop reports an error and leaves services running. Do not delete volumes as a recovery step. Abrupt computer shutdown still requires recovery testing.
 
-This is an unsigned development build. Windows may show a publisher warning. No certificate or Windows protection settings need to be changed. Native Windows installation, startup, and device acceptance have not been verified in this Linux build environment. Do not use this build for production work.
+The app is unsigned. No protection settings, TLS checks or execution policies need to be disabled. Actual Windows installation/startup and device acceptance remain unverified; the executable was built on Linux. See the included `START-HERE.txt` for troubleshooting.
 
-## Rebuild
+## Completed checks
 
-From the repository root after `npm ci`:
+The bundled services passed real Chromium workflows for owner MFA, customer/location creation, dispatch, driver completion, invoice creation and recorded cash payment. Database records, account identity and owner MFA survived a clean Stop/Start. Ten desktop security/controller tests pass. No live charge or external delivery was performed.
+
+The archive builder validates service SHA256 hashes, ZIP CRCs and the Windows executable header and excludes generated state, passwords and logs. Hosted mode remains HTTPS-only; local Docker controls are available only to the trusted setup window, never the office web page.
+
+## Build and deliver
 
 ```sh
-npm run package:windows:zip -w @corewaste/desktop
-# NSIS installer, on Windows or a cross-build host with Wine:
-npm run package:windows -w @corewaste/desktop
-node --test apps/desktop/test/*.test.cjs
+npm ci
+npm run package:windows:portable -w @corewaste/desktop
+bash scripts/build-local-test-images.sh
+node scripts/package-windows-test-kit.cjs
+python3 scripts/archive-windows-test-kit.py .local/windows-download/CoreWaste-Windows-Local-Test-0.2.0-x64
 ```
 
-Artifacts are written to `.local/windows-test`. Electron is explicitly selected as 45.2.3. The build does not publish artifacts, use signing credentials, or embed environment secrets. Connection settings are stored in the user's Electron application-data directory. Remote pages cannot access the connection-settings IPC; navigation is restricted to the chosen server origin and popup windows and device permissions are denied.
+The manual **Prepare Windows test downloads** GitHub Actions workflow builds and tests the full kit, then uploads the ZIP and checksum as a 14-day workflow artifact. A separate Windows job builds the hosted-client NSIS installer; that installer alone does not include local services. Neither job publishes a release or deploys the app.
+
+A ZIP on this workspace is not a verified browser download. Delivery through GitHub remains blocked here because `api.github.com` is denied; no public download URL or remote workflow run is claimed. Do not repeat an internal workspace link as a working download.

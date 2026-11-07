@@ -56,3 +56,7 @@ Public CurbWaste sources became reachable after the user published the environme
 Do not equate implemented source or this checklist with production completion.
 
 Development workflow details: CONTRACT_BILLING.md, EQUIPMENT_STOCK.md, PAYABLES.md, HISTORICAL_IMPORTS.md, CONTRIBUTION_REPORTS.md, SERVICE_TIMING.md and STRIPE_REFUNDS.md. Source archive amounts do not re-post old revenue. Operating contribution does not invent unrecorded labor/overhead costs.
+
+## Windows local testing, version 0.2.0
+
+A full local Windows test kit bundles the office client, API, PostgreSQL and isolated demo identity. Customer-to-payment workflows and clean restart persistence passed Linux/Docker/Chromium checks; ten desktop tests pass. Docker Desktop is required. Actual Windows/device acceptance, signing and accessible download hosting remain pending. See [Windows testing](WINDOWS_TEST.md).

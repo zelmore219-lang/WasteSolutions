@@ -1,0 +1,110 @@
+name: corewaste-local-test
+services:
+  postgres:
+    image: corewaste/local-postgres:0.2.0
+    environment:
+      POSTGRES_USER: corewaste_local
+      POSTGRES_PASSWORD: ${COREWASTE_LOCAL_DB_PASSWORD:?Start this kit through the CoreWaste local-test launcher}
+      POSTGRES_DB: corewaste_local_test
+    volumes: [database:/var/lib/postgresql/data]
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U corewaste_local -d corewaste_local_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks: [test]
+  auth:
+    image: corewaste/local-auth:0.2.0
+    init: true
+    environment:
+      NODE_ENV: test
+      FIREBASE_PROJECT_ID: demo-corewaste
+    ports: ["127.0.0.1:9099:9099", "127.0.0.1:8080:8080"]
+    volumes:
+      - identity:/home/node/auth-state
+      - ./checkpoint.cjs:/home/node/auth/checkpoint.cjs:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:9099/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+    stop_signal: SIGINT
+    stop_grace_period: 60s
+    networks: [test, frontend]
+  initialize:
+    image: corewaste/local-api:0.2.0
+    network_mode: service:auth
+    depends_on:
+      postgres: { condition: service_healthy }
+      auth: { condition: service_healthy }
+    environment: &api_environment
+      NODE_ENV: test
+      DATABASE_URL: postgres://corewaste_local:${COREWASTE_LOCAL_DB_PASSWORD}@postgres:5432/corewaste_local_test
+      FIREBASE_PROJECT_ID: demo-corewaste
+      FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
+      PORT: "8080"
+      WEB_ORIGIN: http://127.0.0.1:8088
+      PUBLIC_WEB_URL: http://127.0.0.1:8088
+      STORAGE_DRIVER: local
+      LOCAL_STORAGE_DIR: /app/local-test-uploads
+      NOTIFICATIONS_WORKER_ENABLED: "false"
+      STRIPE_SECRET_KEY: ""
+      STRIPE_WEBHOOK_SECRET: ""
+      QUICKBOOKS_CLIENT_ID: ""
+      QUICKBOOKS_CLIENT_SECRET: ""
+      ROUTING_API_KEY: ""
+      PAYMENTS_MODE: test
+    volumes:
+      - ./bootstrap.cjs:/app/kit/bootstrap.cjs:ro
+      - ./.state:/app/kit-state
+    command: ["node", "/app/kit/bootstrap.cjs"]
+  api:
+    image: corewaste/local-api:0.2.0
+    network_mode: service:auth
+    depends_on:
+      initialize: { condition: service_completed_successfully }
+    environment: *api_environment
+    volumes: [uploads:/app/local-test-uploads]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8080/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 45
+  web:
+    image: corewaste/local-web:0.2.0
+    depends_on:
+      api: { condition: service_healthy }
+    ports: ["127.0.0.1:8088:8088"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8088/test-kit-info').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks: [frontend]
+networks:
+  frontend: {}
+  test:
+    internal: true
+volumes:
+  database:
+  identity:
+  uploads:

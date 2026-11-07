@@ -1,3 +1,4 @@
+import { useClientAuthEmulator } from "./client-identity-mode";
 import { ProviderRefundPanel } from "./provider-refunds";
 import { ServiceTimingPanel } from "./service-timing";
 import { EquipmentStoragePanel } from "./equipment-storage";
@@ -65,16 +66,20 @@ const auth = configured
       }),
     )
   : null;
-if (import.meta.env.VITE_USE_AUTH_EMULATOR === "true") {
-  if (
-    !import.meta.env.DEV ||
-    !import.meta.env.VITE_FIREBASE_PROJECT_ID?.startsWith("demo-")
-  )
-    throw new Error(
-      "Auth emulator is restricted to development and demo projects",
-    );
-  if (auth) connectAuthEmulator(auth, "http://127.0.0.1:9099");
-}
+if (
+  useClientAuthEmulator(
+    {
+      emulator: import.meta.env.VITE_USE_AUTH_EMULATOR,
+      development: import.meta.env.DEV,
+      mode: import.meta.env.MODE,
+      localTestKit: import.meta.env.VITE_LOCAL_TEST_KIT,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    },
+    window.location,
+  ) &&
+  auth
+)
+  connectAuthEmulator(auth, "http://127.0.0.1:9099");
 const loginDomain = import.meta.env.VITE_EMPLOYEE_LOGIN_DOMAIN;
 const pendingCommands = new Map<string, string>();
 const money = (c: number) =>

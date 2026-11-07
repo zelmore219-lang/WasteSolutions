@@ -4,6 +4,10 @@ CoreWaste's single-company waste operations system. React/TypeScript office and 
 
 **Development milestone, not a finished or production-ready system.** See [feature and acceptance status](docs/FEATURES.md), [architecture](docs/ARCHITECTURE.md), and [deployment requirements](docs/DEPLOYMENT.md). No sample customer records or simulated payment success are installed.
 
+## Windows local test kit
+
+The 0.2.0 full test kit includes local services and test sign-ins; Docker Desktop with Linux containers is required. See [Windows download and startup instructions](docs/WINDOWS_TEST.md). A public download and actual Windows-machine acceptance remain pending.
+
 ## Local development
 
 Requires Node 22+, npm, and a working local Docker daemon.

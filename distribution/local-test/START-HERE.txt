@@ -1,0 +1,26 @@
+COREWASTE WINDOWS LOCAL TEST KIT 0.2.0 — WINDOWS x64
+
+1. Install and start Docker Desktop with Linux containers enabled.
+   Official download: https://www.docker.com/products/docker-desktop/
+2. Extract ALL files from this ZIP into a writable folder. Keep the files together.
+3. Double-click Start-CoreWaste.cmd.
+4. Click Start local test system. First startup imports bundled images and can take several minutes.
+5. When Ready appears, click Show local test sign-ins, then Open CoreWaste.
+6. Sign in using the generated role/email/password. Owner sign-in requires MFA:
+   choose Send verification code in the app, then Show local sign-in code in the separate controls window.
+7. When finished, click Stop local services. Test data is preserved for your next Start.
+
+This kit includes the actual CoreWaste API, PostgreSQL and web application with an isolated Firebase test identity emulator. You do not need Node.js or a live Firebase project to test it. Customer, order and financial records start empty. Four test roles and one clearly named test truck are provided. No successful payments, customers, invoices or jobs are fabricated.
+
+Use test information only. Payments, QuickBooks, external email/text delivery and live road planning are disabled. This is not a production installation. All exposed services bind only to this computer's loopback interface; they are not a mobile-device or LAN server.
+
+Keep the local-test/.state folder with the kit. It contains this installation's generated passwords and local database configuration. Do not upload it, replace it with another installation's state or delete Docker volumes to recover startup problems. Closing the windows does not automatically stop services.
+
+The Windows app is an unsigned development build. Windows may show a publisher warning. No protection settings, TLS verification or execution policies need to be disabled. Linux/Docker/browser checks are documented; actual Windows machine acceptance still needs verification.
+
+Troubleshooting:
+- Start Docker Desktop, select Linux containers and retry if the engine is unavailable.
+- Close other programs using ports 8080, 8088 or 9099. This kit never stops unrelated applications.
+- Extract the full ZIP again if integrity verification reports missing/damaged files. Preserve your original local-test/.state folder and Docker volumes.
+- Startup details are in local-test/.state/startup.log. Keep that folder private.
+- Use the hosted-client launcher only when a secure hosted CoreWaste address and account are supplied. Do not enter a Firebase project website as the CoreWaste server.

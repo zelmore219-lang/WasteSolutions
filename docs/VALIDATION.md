@@ -1,5 +1,13 @@
 # Validation evidence
 
+## Windows local test kit — November 7, 2026
+
+The final API/web/driver type checks and builds passed. Backend regression: **167 passed, zero failed/skipped** (`/tmp/corewaste-download-backend.log`); identity regression: **2 passed** (`/tmp/corewaste-download-identity.log`). Browser regression: **27 passed** (`/tmp/corewaste-download-browser-rerun.log`). The first run passed26 and timed out when the test helper reloaded during asynchronous sign-out; keeping the current office page until sign-out completes corrected the helper, and the full rerun passed. Controls renderer start/open/stop, escaped sign-ins and MFA-code display passed in Chromium with zero page errors (mocked desktop bridge).
+
+Version 0.2.0 bundled services passed owner SMS MFA, customer/location creation, dispatch and driver completion, invoicing and recorded cash payment in Chromium. Clean Stop/Start preserved financial data, identity UID and owner MFA, with no browser page errors. Evidence: `/tmp/corewaste-testkit-business-check.log` and private `.local/windows-test-kit-acceptance.json`. Ten desktop tests and two additional local-client identity-mode guard tests passed. The isolated kit enables demo identity only at the explicit loopback address; normal production emulator protection remains intact.
+
+The Windows x64 portable executable builds successfully on Linux. The full archive contains application runtime, hashed service images and launchers, excluding generated private state. The final archive is `CoreWaste-Windows-Local-Test-0.2.0-x64.zip`, 540,940,756 bytes, 80 files; SHA256 `844a05966ebda461adb3392a9ede180e79a7f906069c4df3a5472b2f94f2e9cf`. ZIP CRCs and packaged-source equality passed. Actual Windows execution, signing and hosted delivery have not been verified. No live provider operation was performed. See [Windows instructions](WINDOWS_TEST.md).
+
 ## Latest completed validation — November 7, 2026
 
 This section supersedes the older chronological runs below. **Development build; not production acceptance.**

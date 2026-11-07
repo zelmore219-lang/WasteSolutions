@@ -1,12 +1,13 @@
 {
   "name": "@corewaste/desktop",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "main.cjs",
   "scripts": {
     "start": "electron .",
     "package:windows": "electron-builder --win nsis --publish never",
-    "package:windows:zip": "electron-builder --win zip --publish never"
+    "package:windows:zip": "electron-builder --win zip --publish never",
+    "package:windows:portable": "electron-builder --win portable --publish never"
   },
   "devDependencies": {
     "electron": "^45.2.3",
@@ -22,7 +23,8 @@
       "setup.html",
       "setup.js",
       "setup.css",
-      "package.json"
+      "package.json",
+      "local-test.cjs"
     ],
     "win": {
       "target": "nsis",
@@ -32,7 +34,7 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
-    "artifactName": "CoreWaste-Test-Setup-${version}-${arch}.${ext}",
+    "artifactName": "CoreWaste-Test-${version}-${arch}.${ext}",
     "directories": {
       "output": "../../.local/windows-test"
     },

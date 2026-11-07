@@ -1,0 +1,12 @@
+# syntax=docker/dockerfile:1
+FROM node:22-bookworm-slim
+WORKDIR /home/node/auth
+RUN --mount=type=secret,id=proxy_ca \
+    if [ -f /run/secrets/proxy_ca ]; then export NODE_EXTRA_CA_CERTS=/run/secrets/proxy_ca; fi; \
+    npm install --prefix /opt/corewaste-auth firebase-tools@15.35.0 --strict-ssl=true && npm cache clean --force
+COPY --chown=node:node distribution/local-test/firebase.json ./firebase.json
+RUN mkdir -p /home/node/auth-state && chown -R node:node /home/node/auth /home/node/auth-state
+USER node
+ENV CI=1 FIREBASE_CLI_DISABLE_UPDATE_CHECK=1
+EXPOSE 9099
+CMD ["/opt/corewaste-auth/node_modules/.bin/firebase","emulators:start","--only","auth","--project","demo-corewaste","--config","firebase.json","--import","/home/node/auth-state/current","--export-on-exit","/home/node/auth-state/current"]
