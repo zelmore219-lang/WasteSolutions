@@ -30,3 +30,7 @@ The Windows client is preconfigured for the intended Firebase host and needs no 
 ## Standard Windows installer
 
 The per-user `CoreWaste-Setup-0.2.0-x64.exe` compiled successfully, with Start-menu/uninstall registration and verified PE/NSIS structure, CRC and SHA256. It requires no Docker on Windows. It remains unsigned; native Windows installation/launch/removal, hosted delivery and live Firebase sign-in are unverified. See [Windows instructions](WINDOWS_TEST.md).
+
+## Verified installer artifact delivery
+
+The separate delivery branch now has a [successful GitHub installer run](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236) with the named downloadable artifact. GitHub sign-in is required. This supersedes earlier download-hosting blockers, while live cloud activation and Windows execution remain unverified. The installer currently opens a connection screen; it cannot enable business exploration without the hosted API/database and Firebase account setup.

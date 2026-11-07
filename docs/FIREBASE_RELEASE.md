@@ -54,3 +54,7 @@ python3 scripts/package-firebase-windows.py
 The output `.local/firebase-download/CoreWaste-Firebase-Windows-0.2.0-x64.zip` contains the portable EXE and `START-HERE.txt`, with a separate SHA256 file. It is unsigned and does not include local containers or credentials. The API health gate and runtime settings have automated tests; actual Windows execution remains pending.
 
 A build file in this workspace is not an accessible download. The manual **Prepare Windows test downloads** workflow also prepares this hosted-client ZIP as a GitHub Actions artifact; it has not been run remotely. GitHub API delivery remains blocked here. Do not label the project URL as deployed or repeat a workspace ZIP link as a verified download.
+
+## Download delivery update
+
+The installer is available as an artifact from the [successful repository build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236), verified on its build page. The normal Git connection enabled a separate delivery branch and a push-triggered workflow despite the blocked REST/upload APIs. See [installation steps](../DOWNLOAD-WINDOWS.md). Earlier statements that no remote build/artifact was available are superseded. Cloud activation and Windows execution acceptance remain pending.

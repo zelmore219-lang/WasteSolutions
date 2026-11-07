@@ -1,5 +1,8 @@
 # Windows testing
 
+**A working installer artifact is now listed on the [successful GitHub build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236).** Follow [download/install instructions](../DOWNLOAD-WINDOWS.md). Sign in to GitHub to download it. The current installer opens the connection screen; business features still require hosted activation. This delivery result supersedes earlier workspace/GitHub delivery limitations below.
+
+
 ## Installable Windows client
 
 `CoreWaste-Setup-0.2.0-x64.exe` is the compiled per-user installer for Windows 10/11 x64. It adds a Start-menu shortcut and Windows Installed Apps uninstall entry, offers an installation directory, refuses existing/nonempty destinations and preserves AppData settings on removal. Docker and administrator access are not required. Close CoreWaste before removal. Live Firebase/API/database activation and an employee account are still required for sign-in.

@@ -4,9 +4,13 @@ CoreWaste's single-company waste operations system. React/TypeScript office and 
 
 **Development milestone, not a finished or production-ready system.** See [feature and acceptance status](docs/FEATURES.md), [architecture](docs/ARCHITECTURE.md), and [deployment requirements](docs/DEPLOYMENT.md). No sample customer records or simulated payment success are installed.
 
+## Windows installer download
+
+The installer is now available from the [successful GitHub build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236). See [download and installation steps](DOWNLOAD-WINDOWS.md). The current client requires hosted services for business features; cloud activation remains pending.
+
 ## Firebase-hosted Windows client
 
-The current direction is Firebase sign-in/Hosting with the API on Cloud Run and PostgreSQL. The preconfigured Windows client requires no Docker on the user’s computer. See [Firebase release preparation](docs/FIREBASE_RELEASE.md). Cloud activation and download hosting are pending; the owner plans to enable billing later.
+The current direction is Firebase sign-in/Hosting with the API on Cloud Run and PostgreSQL. The preconfigured Windows client requires no Docker on the user’s computer. See [Firebase release preparation](docs/FIREBASE_RELEASE.md). Cloud activation is pending; the verified installer artifact is available on GitHub for14 days; the owner plans to enable billing later.
 
 ## Windows local test kit
 

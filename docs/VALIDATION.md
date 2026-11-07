@@ -1,5 +1,12 @@
 # Validation evidence
 
+## Verified GitHub installer delivery — November 7, 2026
+
+GitHub run [42422788236](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236) completed **Success** in3m6s and lists **one151 MB installer artifact**, `CoreWaste-Windows-Installer-0.2.0-x64-UNSIGNED` (artifact13594425678). Its reported ZIP SHA256 is `5f59fc10163d8c43cc1631d8078474b9a9b4cb08e417d03f84c786bf135bd0c8`. The run executes npm ci, all desktop tests, the portable runtime build, the standard per-user installer compiler/integrity checks and artifact upload. The run and named artifact were verified on GitHub’s public build page. Downloading an artifact requires GitHub sign-in. No Windows machine execution is claimed.
+
+Source commit509a57d was pushed to the separate `codex/windows-installer-download` branch through the normal permitted Git HTTPS connection. GitHub’s REST/upload APIs remain blocked, but publishing an Actions artifact through the repository workflow works. No environment configuration or production cloud resources were changed. [Installation instructions](../DOWNLOAD-WINDOWS.md) explicitly state that the current client cannot explore business features until the hosted services are activated. Earlier delivery-blocker entries below describe previous attempts and are superseded by this verified Actions result.
+
+
 ## Installable Windows client — November 7, 2026
 
 A standard NSIS per-user installer was compiled successfully using the cached Electron Builder Linux compiler, without executing Windows code or using Wine. Artifact: `CoreWaste-Setup-0.2.0-x64.exe`, **157,895,602 bytes**, 73 runtime files, SHA256 `2b6831ba6e3a4c9298159ad87a590f330016311e088824396d9304b2b0c6ffe1`. PE/NSIS headers and the full NSIS CRC (all bytes after the stub’s first512 bytes through the final checksum) passed independent validation. The uninstaller uses an explicit file whitelist and installation marker, no recursive folder removal, and preserves AppData. Native Windows behavior remains unverified. Twelve desktop tests pass (`/tmp/corewaste-installable-desktop-tests.log`); build log `/tmp/corewaste-installable-final-build.log`. No app/business logic changed.
