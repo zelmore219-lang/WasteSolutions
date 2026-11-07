@@ -1,0 +1,11 @@
+# Dependency verification
+
+The latest reviewed development tree uses Electron 45.2.3 and Metro 0.83.8. Metro 0.83.8 is an upstream patch in the existing 0.83 series; its asset pipeline replaces image-size with a bounded internal image parser and preserves the asset metadata API used by Expo 54. This avoids substituting a different major image-size API into an older Metro implementation.
+
+All Metro-family packages consumed by Expo/React Native are constrained to 0.83.8 through explicit root overrides. Native react-native-svg stays at the previously tested 15.12.1. The old image-size package is absent from the resolved dependency tree. npm's incremental install initially retained the old locked parser despite changed overrides; the lock was resolved in an isolated directory from the workspace manifests, reviewed, then installed using a frozen-lockfile npm ci. The accepted lock records actual registry artifacts and integrity values; no installed dependency was hand-patched.
+
+Regression checks exercise PNG/JPEG/SVG dimensions, Android/iOS scaled asset metadata and malformed ICNS/HEIF/JXL-style headers in a bounded child process. The malformed ICNS case timed out against the old parser and rejects promptly against the patched pipeline. This is targeted regression coverage, not comprehensive image-format fuzzing. The uploaded operational-media pipeline continues to use Sharp on the API.
+
+Latest full-workspace audit after this change: zero critical, zero high, 24 moderate and one low finding. Moderate findings include older glob/minimatch/uuid dependencies through Expo, Electron Builder and Google SDKs. The suggested fixes include major SDK changes or an Electron Builder downgrade; they were not blindly forced into the application to obtain a clean audit count. Review compatibility and the affected code paths before release. A zero-high audit is not a security sign-off.
+
+Android/iOS JavaScript exports, TypeScript checks, application regression tests and container verification are recorded with exact completed runs in VALIDATION.md. Native signing, Windows/device execution and live provider identities remain separate acceptance requirements. No TLS, checksum, proxy or sandbox protection was disabled for these updates.

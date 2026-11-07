@@ -1,0 +1,15 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f0f5f3; color: #18352b; font: 17px/1.55 system-ui, sans-serif; }
+main { max-width: 760px; margin: 70px auto; background: white; padding: 48px; border-radius: 18px; box-shadow: 0 12px 50px #16382912; }
+.brand { font-size: 25px; font-weight: 750; color: #126246; }
+.brand span { display: block; font-size: 13px; font-weight: 450; color: #52655c; }
+h1 { font-size: 34px; line-height: 1.2; margin-top: 35px; }
+label { display: block; margin-top: 25px; font-weight: 650; }
+input { width: 100%; border: 1px solid #8ba99a; border-radius: 7px; padding: 13px; font: inherit; margin: 8px 0 18px; }
+button { background: #126246; color: white; padding: 12px 30px; border: 0; border-radius: 7px; font: inherit; cursor: pointer; }
+button:disabled { opacity: .6; }
+input:focus-visible, button:focus-visible { outline: 3px solid #6ccdaf; outline-offset: 3px; }
+#message { min-height: 1.6em; color: #8b3417; }
+aside { padding: 20px; background: #f3f6f4; border-left: 4px solid #547b66; font-size: 15px; }
+aside p:last-child { margin-bottom: 0; }
+.hint { font-size: 14px; color: #52655c; }

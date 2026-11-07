@@ -1,0 +1,15 @@
+# QuickBooks general ledger export
+
+The office QuickBooks page connects one QuickBooks Online company through Intuit OAuth. It exports balanced general ledger journal entries; CoreWaste remains the source for customer invoices and payment applications. It does not create QuickBooks invoice/payment documents or reconcile bank feeds. Do not also import those transactions through another integration without an accountant's duplicate-entry review.
+
+Configure QUICKBOOKS_CLIENT_ID, QUICKBOOKS_CLIENT_SECRET, QUICKBOOKS_REDIRECT_URI and QUICKBOOKS_MODE (sandbox or production) securely. Register the exact redirect URL ending in /api/accounting/quickbooks/callback in Intuit. Production requires HTTPS, production mode and INTEGRATION_ENCRYPTION_KEY containing 32 random bytes encoded as base64. Preserve that key in a secret manager with controlled recovery; changing or losing it prevents decryption of saved OAuth refresh tokens. Local development generates an ignored private key under .local.
+
+An owner or manager authorizes Intuit, returns to the app, confirms the exact connected company, maps ledger accounts and explicitly links each receivable customer to an active QuickBooks customer. The link verifies the remote display name. CoreWaste refuses an incompatible chart classification or a switch to another company/mode after the first connection. Customer creation in QuickBooks is an office accounting operation.
+
+The export button sends at most 50 journal entries per run. The request document and company are saved before delivery; the local journal UUID is the provider idempotency key. A matching QuickBooks document receipt is recorded with an append-only export audit record. A retry first searches the exact stable document number and verifies the date, private source reference, both accounts, both amounts and customer references. A lost response with an exact receipt is reconciled without another POST.
+
+If the original request has no visible provider receipt, CoreWaste stops. It does not assume non-delivery or automatically resend. An accountant must investigate the Intuit request/document with provider support. No UI action can erase an attempted request or bypass this check. Similarly, altered or multiple remote receipts stop the export. Full support for resolving confirmed non-delivery is a remaining operational requirement.
+
+Zero-value journal entries are not exported. Payable exports require vendor mappings and are currently refused. Journal dates use the explicit posting date where supplied. General ledger totals should be reconciled against CoreWaste's trial balance and QuickBooks before and after initial acceptance.
+
+Six isolated PostgreSQL/transport tests cover authorization state, exact company review, permissions, encrypted tokens, chart/customer mapping, balanced exports and lost/uncertain response behavior. The live OAuth exchange and real Intuit export have not been run. Configure and accept this integration against an Intuit sandbox before production use.

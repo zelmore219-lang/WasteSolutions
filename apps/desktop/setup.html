@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<title>CoreWaste — Connect</title>
+<link rel="stylesheet" href="setup.css">
+</head>
+<body>
+<main>
+  <div class="brand">CoreWaste <span>Windows test client · 0.1.0</span></div>
+  <h1>Connect to CoreWaste</h1>
+  <p>Enter the secure website address for your CoreWaste test server.</p>
+  <form id="connection">
+    <label for="server">CoreWaste server address</label>
+    <input id="server" type="url" placeholder="https://your-corewaste-server/office" autocomplete="url" required>
+    <button id="connect" type="submit">Connect</button>
+  </form>
+  <p id="message" role="status" aria-live="polite"></p>
+  <aside><strong>Before you test</strong><p>This client connects to a running CoreWaste system. It does not include the database or server. A configured test server and a provisioned test account are required to sign in and test business workflows.</p><p>Server setup and Firebase activation are still pending. If you have not received a test server address, keep this installer for the next testing step.</p></aside>
+  <p class="hint">To change the address later, choose Connection → Change server.</p>
+</main>
+<script src="setup.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+CREATE INDEX payments_invoice ON payments(invoice_id);
+CREATE INDEX refunds_payment ON refunds(payment_id);
+CREATE INDEX adjustments_invoice ON invoice_adjustments(invoice_id);
+CREATE INDEX transfers_invoice ON invoice_credit_transfers(invoice_id);
+CREATE INDEX expense_payments_expense ON expense_payments(expense_id);
+CREATE INDEX orders_customer_date ON orders(customer_id,scheduled_date);
+CREATE INDEX orders_status_date ON orders(status,scheduled_date);
+CREATE INDEX invoices_customer_created ON invoices(customer_id,created_at);
+CREATE INDEX notifications_customer_created ON notifications(customer_id,created_at DESC);
+CREATE INDEX outbox_pending_delivery ON notification_outbox(state,next_attempt_at);
+CREATE INDEX customer_notes_account ON customer_notes(customer_id,created_at DESC);
+CREATE INDEX messages_recipient_created ON driver_messages(recipient_id,created_at DESC);
+CREATE INDEX journal_invoice ON journal(invoice_id);
+CREATE INDEX journal_created ON journal(created_at);

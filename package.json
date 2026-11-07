@@ -1,0 +1,56 @@
+{
+  "name": "corewaste",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/api",
+    "apps/web",
+    "apps/desktop",
+    "apps/driver"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev:api": "npm run dev -w @corewaste/api",
+    "dev:web": "npm run dev -w @corewaste/web",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "build": "npm run build --workspaces --if-present",
+    "test": "tsx --test --test-concurrency=1 apps/api/test/*.test.ts",
+    "typecheck": "tsc --noEmit -p apps/api && tsc --noEmit -p apps/web && npm run typecheck -w @corewaste/driver",
+    "emulator:auth": "npm exec --yes --package firebase-tools@15.35.0 -- firebase emulators:start --only auth --project demo-corewaste --config firebase.json",
+    "test:identity": "tsx --test tests/identity.integration.ts",
+    "test:browser": "playwright test",
+    "jobs": "node --env-file=.env --import tsx scripts/run-jobs.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^24.0.0",
+    "@types/pdfkit": "^0.17.7",
+    "@types/pg": "^8.15.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "type": "module",
+  "overrides": {
+    "@grpc/grpc-js": "^1.14.7",
+    "multer": "^2.5.0",
+    "postcss": "^8.5.32",
+    "metro": "0.83.8",
+    "metro-babel-transformer": "0.83.8",
+    "metro-cache": "0.83.8",
+    "metro-cache-key": "0.83.8",
+    "metro-config": "0.83.8",
+    "metro-core": "0.83.8",
+    "metro-file-map": "0.83.8",
+    "metro-minify-terser": "0.83.8",
+    "metro-resolver": "0.83.8",
+    "metro-runtime": "0.83.8",
+    "metro-source-map": "0.83.8",
+    "metro-symbolicate": "0.83.8",
+    "metro-transform-plugins": "0.83.8",
+    "metro-transform-worker": "0.83.8"
+  }
+}

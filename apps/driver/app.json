@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "CoreWaste Driver",
+    "slug": "corewaste-driver",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "corewaste",
+    "ios": {
+      "bundleIdentifier": "com.corewaste.driver",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.corewaste.driver",
+      "permissions": []
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "CoreWaste uses photographs you choose to document service.",
+          "cameraPermission": "CoreWaste uses the camera to capture service evidence.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "CoreWaste uses your location while on duty to help dispatch track service progress."
+        }
+      ]
+    ]
+  }
+}

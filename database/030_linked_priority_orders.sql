@@ -1,0 +1,10 @@
+ALTER TABLE orders ADD COLUMN number bigint GENERATED ALWAYS AS IDENTITY UNIQUE;
+ALTER TABLE orders ADD COLUMN priority text NOT NULL DEFAULT 'normal' CHECK(priority IN ('low','normal','high','urgent'));
+ALTER TABLE orders ADD COLUMN parent_order_id uuid;
+ALTER TABLE orders ADD COLUMN depends_on_parent boolean NOT NULL DEFAULT false;
+ALTER TABLE orders ADD UNIQUE(id,customer_id);
+ALTER TABLE orders ADD FOREIGN KEY(parent_order_id,customer_id) REFERENCES orders(id,customer_id);
+ALTER TABLE orders ADD CHECK(parent_order_id IS NULL OR parent_order_id<>id);
+ALTER TABLE orders ADD CHECK(NOT depends_on_parent OR parent_order_id IS NOT NULL);
+CREATE INDEX orders_parent ON orders(parent_order_id) WHERE parent_order_id IS NOT NULL;
+CREATE INDEX orders_priority_date ON orders(priority,scheduled_date,status);

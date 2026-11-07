@@ -1,0 +1,49 @@
+name: Validate CoreWaste
+on: [push, pull_request]
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: corewaste
+          POSTGRES_PASSWORD: ci_only
+          POSTGRES_DB: corewaste_test
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgres://corewaste:ci_only@localhost:5432/corewaste_test
+      TEST_DATABASE_URL: postgres://corewaste:ci_only@localhost:5432/corewaste_test
+      ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run db:migrate
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm exec --yes --package firebase-tools@15.35.0 -- firebase emulators:exec --only auth --project demo-corewaste --config firebase.json "npm run test:identity && npm run test:browser"
+  windows-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: node --test apps/desktop/test/*.test.cjs
+      - run: npm run package:windows -w @corewaste/desktop
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CoreWaste-Windows-UNSIGNED-development
+          path: .local/windows-test/*.exe
+          include-hidden-files: true

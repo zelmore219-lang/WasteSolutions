@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+coverage/
+*.log
+.DS_Store
+.expo/
+core
+core.*
+test-results/
+playwright-report/
+.local/
