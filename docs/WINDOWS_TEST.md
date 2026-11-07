@@ -1,5 +1,14 @@
 # Windows testing
 
+## Installable Windows client
+
+`CoreWaste-Setup-0.2.0-x64.exe` is the compiled per-user installer for Windows 10/11 x64. It adds a Start-menu shortcut and Windows Installed Apps uninstall entry, offers an installation directory, refuses existing/nonempty destinations and preserves AppData settings on removal. Docker and administrator access are not required. Close CoreWaste before removal. Live Firebase/API/database activation and an employee account are still required for sign-in.
+
+The installer is unsigned and compiled on Linux, not tested on a Windows machine. Its PE/NSIS headers, complete installer CRC and SHA256 were checked; twelve desktop checks pass. It is 157,895,602 bytes; SHA256 `2b6831ba6e3a4c9298159ad87a590f330016311e088824396d9304b2b0c6ffe1`. Download hosting remains blocked; a workspace path is not a working download URL.
+
+Rebuild the current Windows runtime with Electron Builder, then run `python3 scripts/build-windows-installer.py`. The script uses the Linux NSIS compiler already downloaded by the portable build; no Wine or Windows build container is needed. Outputs and checksums go to `.local/firebase-installer`. [Installer startup notes](../distribution/firebase/INSTALLER-README.txt).
+
+
 The user now prefers the **Firebase-hosted client without Docker**. Its separate `CoreWaste-Firebase-Windows-0.2.0-x64.zip` contains a portable EXE and startup instructions, prefilled for the intended Firebase website. Live services and accessible delivery are pending; billing will be enabled later. See [Firebase release preparation](FIREBASE_RELEASE.md).
 
 The older full local kit below remains an optional Docker-based development path.

@@ -33,7 +33,18 @@ Before publishing:
    The predeploy command rebuilds the Firebase web app, never starts an emulator. Review the Firebase CLI version/environment before deployment; the existing toolchain uses 15.35.0. A successful public health check is not a successful employee sign-in or business acceptance test.
 6. Test real project sign-in/MFA, revocation, customer ownership, dispatch, invoice/payment recording, private attachments, backup recovery and Windows execution. Keep live charges/messages/integrations disabled until separately accepted.
 
-## Windows artifact
+## Windows installer
+
+The standard per-user installer is `CoreWaste-Setup-0.2.0-x64.exe`. It includes Start-menu shortcuts and an uninstaller, writes only current-user installation registry entries and preserves AppData/cloud records. It refuses a nonempty destination or an existing registered installation; uninstall first to reinstall. It contains the same Firebase-connected client as the portable package, without Docker, credentials or local databases.
+
+```sh
+npm run package:windows:portable -w @corewaste/desktop
+python3 scripts/build-windows-installer.py
+```
+
+The output is in `.local/firebase-installer`, with a SHA256 checksum and startup instructions. Linux NSIS compilation, PE/NSIS structure and whole-installer CRC validation passed. It remains unsigned, and actual Windows installation, launch and uninstallation are unverified. The manual Windows-download workflow also prepares this installer as a separate artifact. It has not been published or run remotely.
+
+## Portable Windows artifact
 
 ```sh
 npm run package:windows:portable -w @corewaste/desktop

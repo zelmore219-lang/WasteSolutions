@@ -26,3 +26,7 @@ These outstanding requirements must remain visible. Do not label an unfinished o
 ## Firebase client release preparation
 
 The Windows client is preconfigured for the intended Firebase host and needs no Docker on the user’s computer. It rejects a Firebase welcome page or unhealthy API. Public client configuration, a production web build, API rewrites, private-storage rules template, and guarded Cloud Run migration/deployment scripts are prepared. Actual hosting, authentication/MFA, database/bucket setup, Windows acceptance and downloadable delivery are still pending. See [Firebase release](FIREBASE_RELEASE.md).
+
+## Standard Windows installer
+
+The per-user `CoreWaste-Setup-0.2.0-x64.exe` compiled successfully, with Start-menu/uninstall registration and verified PE/NSIS structure, CRC and SHA256. It requires no Docker on Windows. It remains unsigned; native Windows installation/launch/removal, hosted delivery and live Firebase sign-in are unverified. See [Windows instructions](WINDOWS_TEST.md).

@@ -1,5 +1,12 @@
 # Validation evidence
 
+## Installable Windows client — November 7, 2026
+
+A standard NSIS per-user installer was compiled successfully using the cached Electron Builder Linux compiler, without executing Windows code or using Wine. Artifact: `CoreWaste-Setup-0.2.0-x64.exe`, **157,895,602 bytes**, 73 runtime files, SHA256 `2b6831ba6e3a4c9298159ad87a590f330016311e088824396d9304b2b0c6ffe1`. PE/NSIS headers and the full NSIS CRC (all bytes after the stub’s first512 bytes through the final checksum) passed independent validation. The uninstaller uses an explicit file whitelist and installation marker, no recursive folder removal, and preserves AppData. Native Windows behavior remains unverified. Twelve desktop tests pass (`/tmp/corewaste-installable-desktop-tests.log`); build log `/tmp/corewaste-installable-final-build.log`. No app/business logic changed.
+
+Cloud activation remains pending until billing and project access are configured. A fresh GitHub delivery probe returned proxy CONNECT403; no hosted download, release or remote workflow run is claimed.
+
+
 ## Firebase-hosted client preparation — November 7, 2026
 
 Firebase production web build and API/web/driver TypeScript checks passed. Twelve desktop tests pass, including rejection of Firebase welcome HTML, HTTP failures, unhealthy database responses and network failure; the health request forbids redirects and checks the CoreWaste API identity. Existing setup IPC isolation, local test controls and sandbox tests remain passing. Two emulator-mode guard tests also pass.
