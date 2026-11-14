@@ -10,11 +10,11 @@ Version0.3.0 adds the logo-based app icon and [Settings → Providers](docs/PROV
 
 ## Windows installer download
 
-The installer is now available from the [successful GitHub build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236). See [download and installation steps](DOWNLOAD-WINDOWS.md). The current client requires hosted services for business features; cloud activation remains pending.
+[Download the Windows installer](https://github.com/zelmore219-lang/WasteSolutions/releases/download/demo-v0.3.0/CoreWaste-Setup-0.3.0-x64.exe). The public release download was verified end to end. See [download and installation steps](DOWNLOAD-WINDOWS.md). The current client requires hosted services for business features; cloud activation remains pending.
 
 ## Firebase-hosted Windows client
 
-The current direction is Firebase sign-in/Hosting with the API on Cloud Run and PostgreSQL. The preconfigured Windows client requires no Docker on the user’s computer. See [Firebase release preparation](docs/FIREBASE_RELEASE.md). Cloud activation is pending; the verified installer artifact is available on GitHub for14 days; the owner plans to enable billing later.
+The current direction is Firebase sign-in/Hosting with the API on Cloud Run and PostgreSQL. The preconfigured Windows client requires no Docker on the user’s computer. See [Firebase release preparation](docs/FIREBASE_RELEASE.md). Cloud activation is pending; the verified installer is available as a public GitHub prerelease; the owner plans to enable billing later.
 
 ## Windows local test kit
 

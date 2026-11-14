@@ -1,5 +1,12 @@
 # Validation evidence
 
+## Public 0.3.0 installer delivery — November 13, 2026
+
+[Run43547207851](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/43547207851) completed Success, including installer creation and publication of the GitHub prerelease `demo-v0.3.0`. The public EXE was downloaded completely without GitHub sign-in, not merely checked for an artifact listing. Its published SHA256 matched **e7c86d40b29ca08f02f58fa8a34e7d0865243c91fd8c8dd23f93600ba27d1ed1**; size158,047,362 bytes; PE header and full NSIS CRC passed. Evidence: `.local/verified-download/result.json`. [Direct installation instructions](../DOWNLOAD-WINDOWS.md). Earlier workspace/Actions download limitations below are superseded for this release.
+
+A further real Chromium check signed an isolated owner in with SMS MFA, saved a fake Resend key through Settings, confirmed the password field cleared, verified encrypted database storage and redacted audit history, and verified delivery remained disabled. It exposed a label association issue after saving; separating the remove-secret checkbox into its own label fixed it, and the complete owner flow passed (`/tmp/corewaste-owner-provider-ui.log`). No real provider requests, production accounts or paid cloud resources were created.
+
+
 ## Version 0.3.0 — demo credentials, branding and provider settings
 
 Current checks: **174 backend tests**, **27 browser workflows**, **13 desktop tests**, **2 identity integration tests**, API/web/driver type checks and API/web builds passed. The browser owner/MFA workflow now saves Firebase provider configuration. A separate real Chromium check signed in with demo/password1, opened all seven provider sections, verified that dispatcher cannot edit owner-only settings, and reported zero page errors. The first browser run overlapped the backend suite and its global ledger-count assertion failed; the isolated rerun passed all27.

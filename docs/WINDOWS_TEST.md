@@ -1,5 +1,10 @@
 # Windows testing
 
+## Current download: version 0.3.0
+
+[Direct installer download](https://github.com/zelmore219-lang/WasteSolutions/releases/download/demo-v0.3.0/CoreWaste-Setup-0.3.0-x64.exe), anonymously downloaded and checked against the published SHA256 plus NSIS CRC. Follow [installation steps](../DOWNLOAD-WINDOWS.md). This supersedes earlier artifact-only download instructions below. The installer has the CORE-inspired icon; hosted activation and actual Windows acceptance are still pending.
+
+
 **A working installer artifact is now listed on the [successful GitHub build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236).** Follow [download/install instructions](../DOWNLOAD-WINDOWS.md). Sign in to GitHub to download it. The current installer opens the connection screen; business features still require hosted activation. This delivery result supersedes earlier workspace/GitHub delivery limitations below.
 
 

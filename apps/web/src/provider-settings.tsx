@@ -127,10 +127,10 @@ export function ProviderSettingsPanel({
               style={{ display: "contents" }}
             >
               {provider.fields.map((field) => (
-                <label key={field.name}>
-                  {field.label}
-                  {field.secret ? (
-                    <>
+                <div key={field.name}>
+                  <label>
+                    {field.label}
+                    {field.secret ? (
                       <input
                         type="password"
                         name={field.name}
@@ -143,33 +143,33 @@ export function ProviderSettingsPanel({
                         disabled={!settings.secure_storage_ready}
                         maxLength={4096}
                       />
-                      {field.stored && (
-                        <span className="check">
-                          <input type="checkbox" name={"clear:" + field.name} />
-                          Remove saved secret
-                        </span>
-                      )}
-                    </>
-                  ) : field.options ? (
-                    <select
-                      name={field.name}
-                      defaultValue={field.value || field.options[0]}
-                    >
-                      {field.options.map((o) => (
-                        <option key={o} value={o}>
-                          {o}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      name={field.name}
-                      defaultValue={field.value || ""}
-                      maxLength={4096}
-                      autoComplete="off"
-                    />
+                    ) : field.options ? (
+                      <select
+                        name={field.name}
+                        defaultValue={field.value || field.options[0]}
+                      >
+                        {field.options.map((o) => (
+                          <option key={o} value={o}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        name={field.name}
+                        defaultValue={field.value || ""}
+                        maxLength={4096}
+                        autoComplete="off"
+                      />
+                    )}
+                  </label>
+                  {field.secret && field.stored && (
+                    <label className="check">
+                      <input type="checkbox" name={"clear:" + field.name} />
+                      Remove saved secret
+                    </label>
                   )}
-                </label>
+                </div>
               ))}
               <label className="check">
                 <input

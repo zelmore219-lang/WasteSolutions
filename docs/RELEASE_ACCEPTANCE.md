@@ -34,3 +34,7 @@ The per-user `CoreWaste-Setup-0.2.0-x64.exe` compiled successfully, with Start-m
 ## Verified installer artifact delivery
 
 The separate delivery branch now has a [successful GitHub installer run](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236) with the named downloadable artifact. GitHub sign-in is required. This supersedes earlier download-hosting blockers, while live cloud activation and Windows execution remain unverified. The installer currently opens a connection screen; it cannot enable business exploration without the hosted API/database and Firebase account setup.
+
+## Version 0.3.0 delivery and remaining boundary
+
+The normal public installer download is now available and was downloaded anonymously with SHA256/NSIS CRC verification, superseding previous artifact visibility problems. Demo credentials and provider Settings are tested in isolation. Live Firebase/backend deployment, real provider verification, usable hosted business access and actual Windows/device acceptance are still pending. The installer is a hosted client, not a standalone demo. [Current installer](../DOWNLOAD-WINDOWS.md).
