@@ -1,3 +1,4 @@
+import { providerValue } from "./provider-runtime";
 import {
   BadRequestException,
   ForbiddenException,
@@ -158,7 +159,7 @@ export class Media {
         const sha256 = createHash("sha256").update(buffer).digest("hex"),
           storageKey = "attachments/" + id;
         const driver =
-          process.env.STORAGE_DRIVER ||
+          providerValue("STORAGE_DRIVER") ||
           (process.env.NODE_ENV === "production" ? "gcs" : "local");
         if (driver === "local") {
           if (process.env.NODE_ENV === "production")
@@ -184,12 +185,12 @@ export class Media {
               );
           }
         } else if (driver === "gcs") {
-          if (!process.env.GCS_BUCKET)
+          if (!providerValue("GCS_BUCKET"))
             throw new ServiceUnavailableException(
               "Cloud document storage is not configured",
             );
           const object = new Storage()
-            .bucket(process.env.GCS_BUCKET)
+            .bucket(providerValue("GCS_BUCKET")!)
             .file(storageKey);
           try {
             await object.save(buffer, {
@@ -280,12 +281,12 @@ export class Media {
         ),
       );
     } else {
-      if (!process.env.GCS_BUCKET)
+      if (!providerValue("GCS_BUCKET"))
         throw new ServiceUnavailableException(
           "Cloud document storage is unavailable",
         );
       [data] = await new Storage()
-        .bucket(process.env.GCS_BUCKET)
+        .bucket(providerValue("GCS_BUCKET")!)
         .file(row.storage_key)
         .download({ validation: "crc32c" });
     }

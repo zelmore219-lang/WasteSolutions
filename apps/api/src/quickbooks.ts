@@ -1,3 +1,4 @@
+import { providerValue } from "./provider-runtime";
 import {
   BadRequestException,
   ConflictException,
@@ -32,10 +33,10 @@ export type AccountingTransport = (
 ) => Promise<any>;
 const dispatcher = new EnvHttpProxyAgent();
 function configuration() {
-  const id = process.env.QUICKBOOKS_CLIENT_ID,
-    secret = process.env.QUICKBOOKS_CLIENT_SECRET,
-    redirect = process.env.QUICKBOOKS_REDIRECT_URI,
-    mode = process.env.QUICKBOOKS_MODE || "sandbox";
+  const id = providerValue("QUICKBOOKS_CLIENT_ID"),
+    secret = providerValue("QUICKBOOKS_CLIENT_SECRET"),
+    redirect = providerValue("QUICKBOOKS_REDIRECT_URI"),
+    mode = providerValue("QUICKBOOKS_MODE") || "sandbox";
   if (!id || !secret || !redirect)
     throw new ServiceUnavailableException(
       "QuickBooks connection is not configured",

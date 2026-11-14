@@ -1,3 +1,4 @@
+import { providerValue } from "./provider-runtime";
 import {
   BadGatewayException,
   ServiceUnavailableException,
@@ -57,8 +58,8 @@ export class AmazonRoadProvider implements RoadProvider {
   configured() {
     return Boolean(
       this.transport ||
-      (process.env.ROUTING_API_KEY &&
-        /^[a-z]{2}-[a-z]+-\d$/.test(process.env.ROUTING_REGION || "")),
+      (providerValue("ROUTING_API_KEY") &&
+        /^[a-z]{2}-[a-z]+-\d$/.test(providerValue("ROUTING_REGION") || "")),
     );
   }
   private async request(
@@ -70,11 +71,11 @@ export class AmazonRoadProvider implements RoadProvider {
       throw new ServiceUnavailableException("Road routing is not configured");
     const url = new URL(
       "https://routes.geo." +
-        process.env.ROUTING_REGION +
+        providerValue("ROUTING_REGION") +
         ".amazonaws.com" +
         path,
     );
-    url.searchParams.set("key", process.env.ROUTING_API_KEY!);
+    url.searchParams.set("key", providerValue("ROUTING_API_KEY")!);
     try {
       const response = await fetch(url, {
         method: "POST",

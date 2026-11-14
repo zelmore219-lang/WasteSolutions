@@ -1,6 +1,6 @@
-COREWASTE WINDOWS INSTALLER 0.2.0 — WINDOWS 10/11 x64
+COREWASTE WINDOWS INSTALLER 0.3.0 — WINDOWS 10/11 x64
 
-1. Run CoreWaste-Setup-0.2.0-x64.exe.
+1. Run CoreWaste-Setup-0.3.0-x64.exe.
 2. Choose an empty installation folder. The default is your local Programs folder.
 3. Open CoreWaste from the Windows Start menu.
 4. The address https://wastesoloutions.web.app/office is filled in.

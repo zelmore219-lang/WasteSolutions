@@ -6,7 +6,7 @@ COREWASTE WINDOWS LOCAL TEST KIT 0.2.0 — WINDOWS x64
 3. Double-click Start-CoreWaste.cmd.
 4. Click Start local test system. First startup imports bundled images and can take several minutes.
 5. When Ready appears, click Show local test sign-ins, then Open CoreWaste.
-6. Sign in using the generated role/email/password. Owner sign-in requires MFA:
+6. For the operations demo, sign in with username demo and password password1. Other role sign-ins are generated separately. Owner sign-in requires MFA:
    choose Send verification code in the app, then Show local sign-in code in the separate controls window.
 7. When finished, click Stop local services. Test data is preserved for your next Start.
 

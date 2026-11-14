@@ -214,6 +214,33 @@ test("owner signs in with an enrolled SMS factor before entering company adminis
     .click();
   await page.getByRole("button", { name: "▧ Company", exact: true }).click();
   await expect(page.getByLabel("Company name")).toHaveValue("CoreWaste");
+  await page.getByRole("button", { name: "▧ Settings", exact: true }).click();
+  const firebase = page
+    .locator("section.panel")
+    .filter({
+      has: page.getByRole("heading", { name: "Firebase", exact: true }),
+    });
+  await firebase
+    .getByLabel("Project ID", { exact: true })
+    .fill("demo-corewaste");
+  await firebase
+    .getByLabel("Authentication domain", { exact: true })
+    .fill("demo-corewaste.firebaseapp.com");
+  await firebase
+    .getByLabel("Web API key (public)", { exact: true })
+    .fill("local-demo-only");
+  await firebase
+    .getByRole("button", { name: "Save Firebase configuration", exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      "Firebase configuration saved. Connection has not been verified; no provider action was sent.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Stripe payments", exact: true }),
+  ).toBeVisible();
 });
 test("public CoreWaste website submits a real inquiry that appears in the office queue", async ({
   page,

@@ -1,7 +1,7 @@
 {
   "name": "@corewaste/desktop",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "main.cjs",
   "scripts": {
     "start": "electron .",
@@ -11,7 +11,8 @@
   },
   "devDependencies": {
     "electron": "^45.2.3",
-    "electron-builder": "^26.0.0"
+    "electron-builder": "^26.0.0",
+    "resedit": "3.1.0"
   },
   "build": {
     "appId": "com.corewaste.office",
@@ -25,11 +26,13 @@
       "setup.css",
       "package.json",
       "local-test.cjs",
-      "hosted.cjs"
+      "hosted.cjs",
+      "assets/**"
     ],
     "win": {
       "target": "nsis",
-      "signAndEditExecutable": false
+      "signAndEditExecutable": false,
+      "icon": "assets/app-icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -39,7 +42,14 @@
     "directories": {
       "output": "../../.local/windows-test"
     },
-    "electronVersion": "45.2.3"
+    "electronVersion": "45.2.3",
+    "afterPack": "./brand-windows.cjs",
+    "extraFiles": [
+      {
+        "from": "assets/app-icon.ico",
+        "to": "corewaste.ico"
+      }
+    ]
   },
   "description": "CoreWaste Windows office test client",
   "author": "WasteSolutions"

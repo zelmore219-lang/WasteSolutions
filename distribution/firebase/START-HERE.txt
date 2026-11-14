@@ -1,9 +1,9 @@
-COREWASTE — FIREBASE WINDOWS CLIENT 0.2.0 (x64)
+COREWASTE — FIREBASE WINDOWS CLIENT 0.3.0 (x64)
 
 This client uses your hosted CoreWaste system. Docker Desktop is NOT required.
 
 1. Extract the ZIP into a writable folder.
-2. Open CoreWaste-Firebase-0.2.0-x64.exe.
+2. Open CoreWaste-Firebase-0.3.0-x64.exe.
 3. The Firebase address is already filled in:
    https://wastesoloutions.web.app/office
 4. Choose Connect AFTER the cloud services have been activated.

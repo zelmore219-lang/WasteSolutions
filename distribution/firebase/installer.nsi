@@ -3,6 +3,8 @@ Unicode true
 !include "LogicLib.nsh"
 !include "x64.nsh"
 !include "WinVer.nsh"
+Icon "${ICON_PATH}"
+UninstallIcon "${ICON_PATH}"
 Name "CoreWaste"
 OutFile "${OUTPUT}"
 InstallDir "$LOCALAPPDATA\Programs\CoreWaste"
@@ -69,13 +71,13 @@ Section "CoreWaste" Main
   FileClose $0
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   CreateDirectory "$SMPROGRAMS\CoreWaste"
-  CreateShortcut "$SMPROGRAMS\CoreWaste\CoreWaste.lnk" "$INSTDIR\CoreWaste.exe"
+  CreateShortcut "$SMPROGRAMS\CoreWaste\CoreWaste.lnk" "$INSTDIR\CoreWaste.exe" "" "$INSTDIR\corewaste.ico" 0
   CreateShortcut "$SMPROGRAMS\CoreWaste\Uninstall CoreWaste.lnk" "$INSTDIR\Uninstall.exe"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "DisplayName" "CoreWaste (Firebase Client)"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "DisplayVersion" "${VERSION}"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "Publisher" "CoreWaste"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "InstallLocation" "$INSTDIR"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "DisplayIcon" "$INSTDIR\CoreWaste.exe"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "DisplayIcon" "$INSTDIR\corewaste.ico"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "UninstallString" '$\"$INSTDIR\Uninstall.exe$\"'
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "QuietUninstallString" '$\"$INSTDIR\Uninstall.exe$\" /S'
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CoreWaste" "NoModify" 1

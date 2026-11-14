@@ -1,3 +1,4 @@
+import { ProviderSettings } from "./provider-settings";
 import { StripeRefunds } from "./stripe-refunds";
 import { ServiceTiming } from "./service-timing";
 import { PayableAdjustments } from "./payable-adjustments";
@@ -73,6 +74,7 @@ export const pool = new Pool({
   max: 10,
 });
 export const operations = new Operations(pool);
+const providerSettings = new ProviderSettings(operations);
 const driverActionReview = new DriverActionReview(operations);
 const driverTasks = new DriverTasks(operations);
 const disposalLoads = new DisposalLoads(operations);
@@ -149,6 +151,7 @@ export class IdentityGuard implements CanActivate {
       !identity.firebase?.sign_in_second_factor
     )
       throw new ForbiddenException("Administrator MFA required");
+    await providerSettings.refreshRuntime();
     this.limit(actor.id, 300);
     if (req.method === "POST" && req.url.startsWith("/api/payments/"))
       this.limit(actor.id + ":payments", 10);
@@ -163,6 +166,7 @@ class HealthController {
     @Query() q: unknown,
     @Res() response: any,
   ) {
+    await providerSettings.refreshRuntime();
     await quickbooks.callback(q);
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("Referrer-Policy", "no-referrer");
@@ -176,7 +180,14 @@ class HealthController {
     @Req() r: { rawBody?: Buffer },
     @Headers("stripe-signature") signature: string,
   ) {
+    await providerSettings.refreshRuntime();
     return stripePayments.webhook(r.rawBody || Buffer.alloc(0), signature);
+  }
+  @Get("public/client-config") publicClientConfiguration(
+    @Res({ passthrough: true }) response: any,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return providerSettings.publicClientConfig();
   }
   @Get("public/company") publicCompany() {
     return portal.publicCompany();
@@ -203,6 +214,18 @@ class HealthController {
 @Controller("api")
 @UseGuards(IdentityGuard)
 class OperationsController {
+  @Get("settings/providers") providerConfiguration(@Req() r: { actor: Actor }) {
+    return providerSettings.list(r.actor);
+  }
+  @Post("settings/providers/:provider") saveProviderConfiguration(
+    @Req() r: { actor: Actor },
+    @Param("provider") provider: string,
+    @Headers("idempotency-key") key: string,
+    @Body() body: unknown,
+  ) {
+    return providerSettings.save(r.actor, key, provider, body);
+  }
+
   constructor(@Inject(Changes) private readonly changes: Changes) {}
   @Sse("events") changeEvents(@Req() r: { actor: Actor }) {
     return this.changes.events(r.actor);

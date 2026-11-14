@@ -1,3 +1,5 @@
+import { ProviderSettingsPanel } from "./provider-settings";
+import { loginIdentifier } from "./login-identifier";
 import { useClientAuthEmulator } from "./client-identity-mode";
 import { ProviderRefundPanel } from "./provider-refunds";
 import { ServiceTimingPanel } from "./service-timing";
@@ -53,36 +55,66 @@ import { BillingPanel } from "./billing";
 import { RentalsPanel } from "./rentals";
 import { WorkflowPanel } from "./workflows";
 type Row = Record<string, any>;
-const configured = Boolean(
-  import.meta.env.VITE_FIREBASE_PROJECT_ID &&
-  import.meta.env.VITE_FIREBASE_API_KEY,
+let configured = false;
+let auth: ReturnType<typeof getAuth> | null = null;
+const isolatedDemo = useClientAuthEmulator(
+  {
+    emulator: import.meta.env.VITE_USE_AUTH_EMULATOR,
+    development: import.meta.env.DEV,
+    mode: import.meta.env.MODE,
+    localTestKit: import.meta.env.VITE_LOCAL_TEST_KIT,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  },
+  window.location,
 );
-const auth = configured
-  ? getAuth(
-      initializeApp({
-        apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-        authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-        projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-        appId: import.meta.env.VITE_FIREBASE_APP_ID,
-        storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      }),
+const identityReady = (async () => {
+  const profile: Record<string, string | undefined> = {
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  };
+  try {
+    const response = await fetch("/api/public/client-config", {
+      cache: "no-store",
+      signal: AbortSignal.timeout(3000),
+    });
+    if (response.ok) {
+      const runtime = await response.json();
+      if (runtime && typeof runtime === "object" && !Array.isArray(runtime)) {
+        if (
+          runtime.projectId &&
+          profile.projectId &&
+          runtime.projectId !== profile.projectId
+        )
+          throw Error("Firebase project does not match this app build");
+        for (const name of [
+          "apiKey",
+          "authDomain",
+          "projectId",
+          "appId",
+          "storageBucket",
+        ])
+          if (typeof runtime[name] === "string" && runtime[name])
+            profile[name] = runtime[name];
+      }
+    }
+  } catch (error) {
+    if (
+      (error as Error).message ===
+      "Firebase project does not match this app build"
     )
-  : null;
-if (
-  useClientAuthEmulator(
-    {
-      emulator: import.meta.env.VITE_USE_AUTH_EMULATOR,
-      development: import.meta.env.DEV,
-      mode: import.meta.env.MODE,
-      localTestKit: import.meta.env.VITE_LOCAL_TEST_KIT,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    },
-    window.location,
-  ) &&
-  auth
-)
-  connectAuthEmulator(auth, "http://127.0.0.1:9099");
+      throw error;
+    // Older/unavailable APIs retain the explicitly built public configuration.
+  }
+  configured = Boolean(profile.projectId && profile.apiKey);
+  if (configured) {
+    auth = getAuth(initializeApp(profile));
+    if (isolatedDemo) connectAuthEmulator(auth, "http://127.0.0.1:9099");
+  }
+})();
 const loginDomain = import.meta.env.VITE_EMPLOYEE_LOGIN_DOMAIN;
 const pendingCommands = new Map<string, string>();
 const money = (c: number) =>
@@ -334,6 +366,13 @@ function App() {
         </div>
         <h1>Operations, connected.</h1>
         <p>One place for your customers, dispatch, and billing.</p>
+        {isolatedDemo && (
+          <p className="notice">
+            Isolated demo — sign in with <strong>demo</strong> and password{" "}
+            <strong>password1</strong>. Live payments and external delivery are
+            disabled.
+          </p>
+        )}
         {!configured ? (
           <div className="notice">
             Firebase setup is required. Configure the environment variables
@@ -345,24 +384,23 @@ function App() {
               const b = form(e);
               setError("");
               const login = String(b.email).trim().toLowerCase();
-              if (!login.includes("@") && !loginDomain) {
-                setError(
-                  "Employee login domain is not configured; use your work email.",
-                );
+              let identifier: string;
+              try {
+                identifier = loginIdentifier(login, loginDomain, isolatedDemo);
+              } catch (error) {
+                setError((error as Error).message);
                 return;
               }
               const authenticate = creatingAccount
                 ? createUserWithEmailAndPassword
                 : signInWithEmailAndPassword;
-              void authenticate(
-                auth!,
-                login.includes("@") ? login : `${login}@${loginDomain}`,
-                String(b.password),
-              ).catch((e) => {
-                if (e.code === "auth/multi-factor-auth-required")
-                  setResolver(getMultiFactorResolver(auth!, e));
-                else setError(e.message);
-              });
+              void authenticate(auth!, identifier, String(b.password)).catch(
+                (e) => {
+                  if (e.code === "auth/multi-factor-auth-required")
+                    setResolver(getMultiFactorResolver(auth!, e));
+                  else setError(e.message);
+                },
+              );
             }}
           >
             <label>
@@ -591,6 +629,15 @@ function App() {
               : []),
             ...(["owner", "manager", "accountant"].includes(actor?.role)
               ? ["Reports", "QuickBooks", "Provider refunds"]
+              : []),
+            ...([
+              "owner",
+              "manager",
+              "dispatcher",
+              "office",
+              "accountant",
+            ].includes(actor?.role)
+              ? ["Settings"]
               : []),
             ...(["owner", "manager"].includes(actor?.role)
               ? ["Company", "Employees", "Audit log"]
@@ -1566,6 +1613,7 @@ function App() {
         {actor && tab === "Scheduled work" && (
           <AutomationPanel actor={actor} api={api} refresh={load} />
         )}
+        {actor && tab === "Settings" && <ProviderSettingsPanel api={api} />}
         {actor && tab === "Notification settings" && (
           <NotificationSettings actor={actor} api={api} />
         )}
@@ -1574,8 +1622,15 @@ function App() {
     </div>
   );
 }
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+void identityReady
+  .catch(() => {
+    configured = false;
+    auth = null;
+  })
+  .then(() => {
+    createRoot(document.getElementById("root")!).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+    );
+  });

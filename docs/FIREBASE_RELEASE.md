@@ -21,7 +21,7 @@ Before publishing:
 
 1. Provision reviewed PostgreSQL/Cloud SQL in the same region, backups/PITR, restricted application and separate schema-owner DB users. Store their URL-encoded connection URLs in separate Secret Manager secrets, using the Cloud SQL Unix socket. Enable necessary service APIs and Artifact Registry.
 2. Grant the runtime identity Firebase Authentication administration permissions required by revocation/provisioning, Cloud SQL Client, access only to its database secret and private attachment bucket. Give the migration identity its own database secret and Cloud SQL access. Review deployment identity permissions separately; do not grant all users database/bucket access.
-3. Build the existing API Dockerfile, push it to this project's Artifact Registry and review the immutable digest. Supply the six required `COREWASTE_*` settings listed by `scripts/deploy-firebase-api.sh`; run it as the authorized operator. It runs the migration job before deploying the API. Its Cloud Run transport is public for Hosting, while business endpoints still enforce Firebase identity/roles. No automated billing or provider-delivery schedule is installed.
+3. Build the existing API Dockerfile, push it to this project's Artifact Registry and review the immutable digest. Supply the required `COREWASTE_*` settings listed by `scripts/deploy-firebase-api.sh`; run it as the authorized operator. It runs the migration job before deploying the API. Its Cloud Run transport is public for Hosting, while business endpoints still enforce Firebase identity/roles. No automated billing or provider-delivery schedule is installed.
 4. In Firebase Authentication enable Email/Password; authorize `wastesoloutions.web.app` and the actual approved domains. Configure Identity Platform/MFA as needed. Create/verify the first owner identity, provision its employee mapping using `scripts/provision.ts` and enroll MFA before acceptance. Public sign-up does not grant employee permissions.
 5. Deploy Hosting with an authenticated Firebase CLI:
 
@@ -58,3 +58,7 @@ A build file in this workspace is not an accessible download. The manual **Prepa
 ## Download delivery update
 
 The installer is available as an artifact from the [successful repository build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236), verified on its build page. The normal Git connection enabled a separate delivery branch and a push-triggered workflow despite the blocked REST/upload APIs. See [installation steps](../DOWNLOAD-WINDOWS.md). Earlier statements that no remote build/artifact was available are superseded. Cloud activation and Windows execution acceptance remain pending.
+
+## Version 0.3.0 settings and branding
+
+The application now includes [Settings → Providers](PROVIDER_SETTINGS.md), authenticated encryption for stored provider secrets, runtime provider configuration and a public-field-only Firebase client profile. Migration048 and the secure provider encryption key are required. The demo username/password are demo/password1, only in the isolated emulator. The Windows icon is derived from the supplied CORE green circular mark; Windows EXE, setup/uninstaller, web favicon and driver assets use the icon. Native Windows/device acceptance and live cloud/provider activation remain pending.

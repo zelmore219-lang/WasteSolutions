@@ -1,3 +1,4 @@
+import { providerValue } from "./provider-runtime";
 import { stripeClient } from "./payment-runtime";
 import {
   BadRequestException,
@@ -24,7 +25,7 @@ export class StripePayments {
     permit(a, [...FINANCE, "customer"]);
     const b = parse(z.object({ invoice_id: uuid }).strict(), body);
     const stripe = this.client();
-    const origin = process.env.PUBLIC_WEB_URL;
+    const origin = providerValue("PUBLIC_WEB_URL");
     if (!origin)
       throw new ServiceUnavailableException(
         "Payment return address is not configured",
@@ -102,7 +103,7 @@ export class StripePayments {
     return { url: session.url, attempt_id: attempt.id };
   }
   async webhook(body: Buffer, signature: string | undefined) {
-    const secret = process.env.STRIPE_WEBHOOK_SECRET;
+    const secret = providerValue("STRIPE_WEBHOOK_SECRET");
     if (!secret)
       throw new ServiceUnavailableException(
         "Payment webhook is not configured",
@@ -116,14 +117,14 @@ export class StripePayments {
     }
     if (
       process.env.NODE_ENV === "production" &&
-      process.env.PAYMENTS_MODE !== "live"
+      providerValue("PAYMENTS_MODE") !== "live"
     )
       throw new ServiceUnavailableException(
         "Production payments require explicit live mode",
       );
     if (
-      process.env.PAYMENTS_MODE &&
-      event.livemode !== (process.env.PAYMENTS_MODE === "live")
+      providerValue("PAYMENTS_MODE") &&
+      event.livemode !== (providerValue("PAYMENTS_MODE") === "live")
     )
       throw new BadRequestException(
         "Payment event mode does not match this environment",

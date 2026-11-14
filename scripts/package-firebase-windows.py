@@ -3,14 +3,15 @@
 from pathlib import Path
 import hashlib, json, shutil, zipfile
 root=Path(__file__).resolve().parent.parent
-exe=root/'.local/windows-test/CoreWaste-Test-0.2.0-x64.exe'
+version=json.loads((root/'apps/desktop/package.json').read_text())['version']
+exe=root/f'.local/windows-test/CoreWaste-Test-{version}-x64.exe'
 if not exe.is_file() or exe.open('rb').read(2)!=b'MZ':
  raise SystemExit('Build the Windows portable executable first')
 out=root/'.local/firebase-download'
 out.mkdir(parents=True,exist_ok=True)
-name='CoreWaste-Firebase-0.2.0-x64.exe'
+name=f'CoreWaste-Firebase-{version}-x64.exe'
 shutil.copyfile(exe,out/name)
-archive=out/'CoreWaste-Firebase-Windows-0.2.0-x64.zip'
+archive=out/f'CoreWaste-Firebase-Windows-{version}-x64.zip'
 temporary=archive.with_suffix('.zip.tmp')
 with zipfile.ZipFile(temporary,'w') as z:
  z.write(out/name,name,compress_type=zipfile.ZIP_STORED)

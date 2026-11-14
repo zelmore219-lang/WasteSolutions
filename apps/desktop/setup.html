@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; img-src 'self'"
     />
     <title>CoreWaste — Connect</title>
     <link rel="stylesheet" href="setup.css" />
@@ -13,7 +13,7 @@
   <body>
     <main>
       <div class="brand">
-        CoreWaste <span>Windows test client · 0.2.0</span>
+        <img src="assets/app-icon.png" width="36" height="36" alt="CORE Waste Solutions" /> CoreWaste <span>Windows test client · 0.3.0</span>
       </div>
       <h1>Connect to CoreWaste</h1>
       <p>Your Firebase website address is filled in. Connect after cloud activation.</p>
@@ -42,6 +42,7 @@
           ><button id="local-open" type="button" disabled>Open CoreWaste</button
           ><button id="local-stop" type="button">Stop local services</button>
         </div>
+        <p>Demo username: <strong>demo</strong> · Password: <strong>password1</strong>. This account is for the isolated demo only.</p>
         <h3>Test sign-ins</h3>
         <p>
           Generated passwords stay on your computer. Use these only for this

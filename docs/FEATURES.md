@@ -64,3 +64,7 @@ A full local Windows test kit bundles the office client, API, PostgreSQL and iso
 ## Firebase-hosted Windows direction
 
 Firebase production client configuration and Hosting-to-Cloud-Run API routing are prepared. The Windows client pre-fills the intended Firebase URL and checks API/database health before opening it, without Docker on the user’s computer. The user plans to enable billing later; real cloud deployment, sign-in/MFA, PostgreSQL/bucket provisioning, installed Windows acceptance and accessible delivery remain pending. See [Firebase release](FIREBASE_RELEASE.md).
+
+## Version 0.3.0
+
+Demo-only demo/password1 login, supplied-logo-derived app icons, and Settings → Providers are implemented. Provider secrets are encrypted, redacted and owner-controlled; public Firebase configuration can apply on reload while backend identity remains deployment-managed. Migration048 and a securely connected provider encryption key are required. See [Provider settings](PROVIDER_SETTINGS.md). Live configuration/acceptance and usable hosted access remain pending.

@@ -4,6 +4,10 @@ CoreWaste's single-company waste operations system. React/TypeScript office and 
 
 **Development milestone, not a finished or production-ready system.** See [feature and acceptance status](docs/FEATURES.md), [architecture](docs/ARCHITECTURE.md), and [deployment requirements](docs/DEPLOYMENT.md). No sample customer records or simulated payment success are installed.
 
+## Demo login, icon and provider settings
+
+Version0.3.0 adds the logo-based app icon and [Settings → Providers](docs/PROVIDER_SETTINGS.md). The isolated emulator accepts **demo / password1** with dispatcher permissions; production access is unchanged. Provider secrets require the backend encryption key; apply migration048. This does not make the hosted Windows client an offline demo.
+
 ## Windows installer download
 
 The installer is now available from the [successful GitHub build](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236). See [download and installation steps](DOWNLOAD-WINDOWS.md). The current client requires hosted services for business features; cloud activation remains pending.

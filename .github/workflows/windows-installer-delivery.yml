@@ -23,12 +23,37 @@ jobs:
       - run: python3 scripts/build-windows-installer.py
       - uses: actions/upload-artifact@v4
         with:
-          name: CoreWaste-Windows-Installer-0.2.0-x64-UNSIGNED
+          name: CoreWaste-Windows-Installer-0.3.0-x64-UNSIGNED
           path: |
-            .local/firebase-installer/CoreWaste-Setup-0.2.0-x64.exe
-            .local/firebase-installer/CoreWaste-Setup-0.2.0-x64.exe.sha256
+            .local/firebase-installer/CoreWaste-Setup-0.3.0-x64.exe
+            .local/firebase-installer/CoreWaste-Setup-0.3.0-x64.exe.sha256
             .local/firebase-installer/START-HERE.txt
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
+  publish-test-download:
+    needs: installer
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: CoreWaste-Windows-Installer-0.3.0-x64-UNSIGNED
+          path: installer-download
+      - name: Publish direct test-installer download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: demo-v0.3.0
+        run: |
+          gh release create "$RELEASE_TAG" \
+            installer-download/CoreWaste-Setup-0.3.0-x64.exe \
+            installer-download/CoreWaste-Setup-0.3.0-x64.exe.sha256 \
+            installer-download/START-HERE.txt \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --prerelease --latest=false --title "CoreWaste 0.3.0 — Windows test client" \
+            --notes-file distribution/firebase/RELEASE-NOTES.md

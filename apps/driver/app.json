@@ -11,7 +11,11 @@
     },
     "android": {
       "package": "com.corewaste.driver",
-      "permissions": []
+      "permissions": [],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app-icon.png",
+        "backgroundColor": "#ffffff"
+      }
     },
     "plugins": [
       "expo-secure-store",
@@ -29,6 +33,7 @@
           "locationWhenInUsePermission": "CoreWaste uses your location while on duty to help dispatch track service progress."
         }
       ]
-    ]
+    ],
+    "icon": "./assets/app-icon.png"
   }
 }

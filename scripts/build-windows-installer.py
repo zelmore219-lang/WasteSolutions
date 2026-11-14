@@ -52,7 +52,7 @@ def build():
     (OUT/'payload-install.nsh').write_text('\n'.join(install)+'\n')
     (OUT/'payload-uninstall.nsh').write_text('\n'.join(uninstall)+'\n')
     env={**os.environ,'NSISDIR':str(compiler.parent.parent)}
-    subprocess.run([str(compiler),'-V3','-DOUTPUT='+str(EXE),'-DBUILD_DIR='+str(OUT),'-DVERSION='+VERSION,str(ROOT/'distribution/firebase/installer.nsi')],env=env,check=True,cwd=ROOT)
+    subprocess.run([str(compiler),'-V3','-DOUTPUT='+str(EXE),'-DBUILD_DIR='+str(OUT),'-DICON_PATH='+str(ROOT/'apps/desktop/assets/app-icon.ico'),'-DVERSION='+VERSION,str(ROOT/'distribution/firebase/installer.nsi')],env=env,check=True,cwd=ROOT)
     data=EXE.read_bytes()
     pe=struct.unpack_from('<I',data,0x3c)[0]
     if data[:2]!=b'MZ' or data[pe:pe+4]!=b'PE\0\0' or b'NullsoftInst' not in data: raise SystemExit('Installer header is invalid')

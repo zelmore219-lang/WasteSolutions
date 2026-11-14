@@ -1,3 +1,4 @@
+import { providerValue } from "./provider-runtime";
 import { Pool } from "pg";
 import { randomUUID } from "node:crypto";
 import { fetch, EnvHttpProxyAgent } from "undici";
@@ -118,20 +119,23 @@ export class TwilioAdapter implements DeliveryAdapter {
 }
 export function configuredAdapters() {
   const adapters: DeliveryAdapter[] = [];
-  if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM)
+  if (providerValue("RESEND_API_KEY") && providerValue("EMAIL_FROM"))
     adapters.push(
-      new ResendAdapter(process.env.RESEND_API_KEY, process.env.EMAIL_FROM),
+      new ResendAdapter(
+        providerValue("RESEND_API_KEY")!,
+        providerValue("EMAIL_FROM")!,
+      ),
     );
   if (
-    process.env.TWILIO_ACCOUNT_SID &&
-    process.env.TWILIO_AUTH_TOKEN &&
-    process.env.SMS_FROM
+    providerValue("TWILIO_ACCOUNT_SID") &&
+    providerValue("TWILIO_AUTH_TOKEN") &&
+    providerValue("SMS_FROM")
   )
     adapters.push(
       new TwilioAdapter(
-        process.env.TWILIO_ACCOUNT_SID,
-        process.env.TWILIO_AUTH_TOKEN,
-        process.env.SMS_FROM,
+        providerValue("TWILIO_ACCOUNT_SID")!,
+        providerValue("TWILIO_AUTH_TOKEN")!,
+        providerValue("SMS_FROM")!,
       ),
     );
   return adapters;

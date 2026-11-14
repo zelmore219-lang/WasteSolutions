@@ -37,7 +37,8 @@ async function main() {
       )
     ).rows[0];
     if (exists.marker) {
-      const marker = (
+      await require("/app/apps/api/dist/demo-account.js").provisionDemoAccount();
+    const marker = (
         await lock.query(
           "SELECT installation_id FROM corewaste_local_test.installation WHERE singleton",
         )

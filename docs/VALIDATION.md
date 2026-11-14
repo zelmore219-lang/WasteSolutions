@@ -1,5 +1,16 @@
 # Validation evidence
 
+## Version 0.3.0 — demo credentials, branding and provider settings
+
+Current checks: **174 backend tests**, **27 browser workflows**, **13 desktop tests**, **2 identity integration tests**, API/web/driver type checks and API/web builds passed. The browser owner/MFA workflow now saves Firebase provider configuration. A separate real Chromium check signed in with demo/password1, opened all seven provider sections, verified that dispatcher cannot edit owner-only settings, and reported zero page errors. The first browser run overlapped the backend suite and its global ledger-count assertion failed; the isolated rerun passed all27.
+
+Provider tests cover owner authorization, authenticated field-bound encryption, write-only/redacted responses, audit privacy, idempotency, stale versions, preserving/clearing secrets, missing encryption-key rejection, demo activation restrictions and public Firebase isolation. Icon tests verify that replacing Windows resources preserves embedded integrity data. The actual built Windows EXE was checked for all six logo icon sizes matching the ICO asset.
+
+Windows installer0.3.0 compiled and its NSIS CRC passed:158,047,332 bytes, SHA256 `da024a64eeee62cb5f6891469996be7ba63d2bfe9877749410679486b333bf44`. The portable ZIP is110,071,250 bytes, SHA256 `a3f9cbfc347ec7998c2f6a5dd192791bf1482e4d61fdda1867ea6abe91d98eb4`. These hashes identify local builds; remote build bytes may differ. Actual Windows installation/execution remains unverified.
+
+Logs: `/tmp/corewaste-completion-final-backend.log`, `/tmp/corewaste-completion-final-browser.log`, `/tmp/corewaste-completion-desktop.log`, `/tmp/corewaste-completion-identity.log`, `/tmp/corewaste-030-final-types.log`, `/tmp/corewaste-030-final-build.log`, `/tmp/corewaste-030-installer-build.log`. Live Firebase access, cloud billing/deployment and real provider acceptance remain pending. The demo credential does not provision a production account.
+
+
 ## Verified GitHub installer delivery — November 7, 2026
 
 GitHub run [42422788236](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/42422788236) completed **Success** in3m6s and lists **one151 MB installer artifact**, `CoreWaste-Windows-Installer-0.2.0-x64-UNSIGNED` (artifact13594425678). Its reported ZIP SHA256 is `5f59fc10163d8c43cc1631d8078474b9a9b4cb08e417d03f84c786bf135bd0c8`. The run executes npm ci, all desktop tests, the portable runtime build, the standard per-user installer compiler/integrity checks and artifact upload. The run and named artifact were verified on GitHub’s public build page. Downloading an artifact requires GitHub sign-in. No Windows machine execution is claimed.

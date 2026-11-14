@@ -22,7 +22,7 @@ jobs:
       - run: python3 scripts/build-windows-installer.py
       - uses: actions/upload-artifact@v4
         with:
-          name: CoreWaste-Setup-0.2.0-x64-UNSIGNED
+          name: CoreWaste-Setup-0.3.0-x64-UNSIGNED
           path: |
             .local/firebase-installer/*.exe
             .local/firebase-installer/*.sha256
@@ -34,7 +34,7 @@ jobs:
       - run: python3 scripts/package-firebase-windows.py
       - uses: actions/upload-artifact@v4
         with:
-          name: CoreWaste-Firebase-Windows-0.2.0-x64-UNSIGNED
+          name: CoreWaste-Firebase-Windows-0.3.0-x64-UNSIGNED
           path: |
             .local/firebase-download/*.zip
             .local/firebase-download/*.sha256

@@ -60,6 +60,7 @@ async function connect(target) {
       return;
     }
     officeWindow = new BrowserWindow({
+      icon: path.join(__dirname, "assets/app-icon.png"),
       width: 1440,
       height: 960,
       minWidth: 900,
@@ -93,6 +94,7 @@ app.whenReady().then(async () => {
   );
   session.defaultSession.setPermissionCheckHandler(() => false);
   window = new BrowserWindow({
+    icon: path.join(__dirname, "assets/app-icon.png"),
     width: localTest ? 1050 : 1440,
     height: 960,
     minWidth: 900,

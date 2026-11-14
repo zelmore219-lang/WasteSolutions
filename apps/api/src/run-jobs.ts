@@ -1,3 +1,4 @@
+import { ProviderSettings } from "./provider-settings";
 import { Pool } from "pg";
 import { Operations, Actor } from "./domain";
 import { Workflows } from "./workflows";
@@ -21,6 +22,7 @@ export async function runJobs() {
       throw Error(
         "JOB_ACTOR_ID must identify an authorized active owner or manager service principal",
       );
+    await new ProviderSettings(ops).refreshRuntime(true);
     const payments = new StripePayments(ops, new Finance(ops)),
       profiles = new StripeProfiles(ops, (e, t) => payments.process(e, t)),
       automation = new Automation(

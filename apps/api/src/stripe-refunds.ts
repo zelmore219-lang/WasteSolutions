@@ -1,3 +1,4 @@
+import { providerValue } from "./provider-runtime";
 import {
   BadRequestException,
   ConflictException,
@@ -49,9 +50,9 @@ export interface RefundProvider {
 export class StripeRefundProvider implements RefundProvider {
   configured() {
     return (
-      Boolean(process.env.STRIPE_SECRET_KEY) &&
+      Boolean(providerValue("STRIPE_SECRET_KEY")) &&
       (process.env.NODE_ENV !== "production" ||
-        process.env.PAYMENTS_MODE === "live")
+        providerValue("PAYMENTS_MODE") === "live")
     );
   }
   async create(
@@ -301,9 +302,9 @@ export class StripeRefunds {
           externalReceipt &&
           (externalReceipt.payment_intent !== paymentIntent ||
             externalReceipt.amount !== b.amount_cents ||
-            (process.env.PAYMENTS_MODE &&
+            (providerValue("PAYMENTS_MODE") &&
               externalReceipt.livemode !==
-                (process.env.PAYMENTS_MODE === "live")))
+                (providerValue("PAYMENTS_MODE") === "live")))
         )
           throw new ConflictException(
             "External Stripe receipt does not match the selected funds, amount or environment",
@@ -469,8 +470,8 @@ export class StripeRefunds {
         : r.metadata.corewaste_refund_request_id !== row.id) ||
       r.payment_intent !== row.payment_intent ||
       r.amount !== row.amount_cents ||
-      (process.env.PAYMENTS_MODE &&
-        r.livemode !== (process.env.PAYMENTS_MODE === "live"))
+      (providerValue("PAYMENTS_MODE") &&
+        r.livemode !== (providerValue("PAYMENTS_MODE") === "live"))
     )
       throw new ConflictException(
         "Stripe refund receipt does not exactly match this request",
