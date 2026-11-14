@@ -123,15 +123,22 @@ export const PROVIDERS: Record<
   },
   storage: {
     label: "Private file storage",
-    help: "Bucket access uses the server’s Google Cloud identity. Files remain authorized through the API.",
+    help: "Choose Supabase for the free hosting route, or Google Cloud Storage for the paid cloud route. Files are private and authorized through the API.",
     fields: [
       {
         name: "STORAGE_DRIVER",
         label: "Storage type",
-        options: ["gcs", "local"],
+        options: ["gcs", "supabase", "local"],
         required: true,
       },
-      { name: "GCS_BUCKET", label: "Private bucket name", required: true },
+      { name: "GCS_BUCKET", label: "Google Cloud bucket name" },
+      { name: "SUPABASE_URL", label: "Supabase project URL" },
+      { name: "SUPABASE_BUCKET", label: "Supabase private bucket name" },
+      {
+        name: "SUPABASE_SERVICE_ROLE_KEY",
+        label: "Supabase backend service-role key",
+        secret: true,
+      },
     ],
   },
 };

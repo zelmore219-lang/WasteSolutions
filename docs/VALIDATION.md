@@ -1,5 +1,14 @@
 # Validation evidence
 
+## Free-tier hosting preparation — November 14, 2026
+
+**181 backend tests** and API/web/driver type checks passed. Migration049 adds private Supabase storage. The generated SQL applied all49 migrations in an isolated database, allowed application writes via corewaste_app, denied anonymous reads/DDL/audit deletion, and refused password rotation on re-run. A fresh-database check also applied49 migrations while preserving the cluster’s existing runtime login. Results: `.local/free-schema-check.json`; logs `/tmp/corewaste-free-schema-check.log`, `/tmp/corewaste-free-final-backend.log`.
+
+The optimized combined web/API image built successfully: `corewaste-free:development`, SHA256 `86230f44f85597ccd8e6d9c6882168420c874783538e6eac9a82593d72f90a45`. It ran with a512 MB limit/read-only root, restricted DB role and format-valid locally generated test credentials. All managed-host startup gates passed; web/office/portal200, unauthenticated API401, unknown API JSON404, authentication CSP present. Chromium rendered the production sign-in with zero page errors; real external authentication was not attempted. Results `.local/free-image-check.json`; `/tmp/corewaste-free-final-image-build.log`, `/tmp/corewaste-free-final-image-check.log`. The first image attempt exhausted build-layer storage; unused build cache was removed and install/build/prune combined into one layer. No source, business database or uploaded record was deleted.
+
+No live Render/Supabase deployment, real Firebase authorization, billing change, provider send/charge or customer launch was performed by these checks. The user creates the service accounts/bucket and enters private settings directly in provider dashboards. [Free setup guide](FREE_HOSTING_SETUP.md).
+
+
 ## Public 0.3.0 installer delivery — November 13, 2026
 
 [Run43547207851](https://github.com/zelmore219-lang/WasteSolutions/actions/runs/43547207851) completed Success, including installer creation and publication of the GitHub prerelease `demo-v0.3.0`. The public EXE was downloaded completely without GitHub sign-in, not merely checked for an artifact listing. Its published SHA256 matched **e7c86d40b29ca08f02f58fa8a34e7d0865243c91fd8c8dd23f93600ba27d1ed1**; size158,047,362 bytes; PE header and full NSIS CRC passed. Evidence: `.local/verified-download/result.json`. [Direct installation instructions](../DOWNLOAD-WINDOWS.md). Earlier workspace/Actions download limitations below are superseded for this release.

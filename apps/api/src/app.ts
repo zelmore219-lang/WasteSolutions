@@ -1,3 +1,5 @@
+import { configureHostedWeb } from "./hosted-web";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { ProviderSettings } from "./provider-settings";
 import { StripeRefunds } from "./stripe-refunds";
 import { ServiceTiming } from "./service-timing";
@@ -1396,7 +1398,7 @@ class OperationsController {
 class AppModule {}
 export async function createApp() {
   assertIdentityConfiguration();
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ["error", "warn", "log"],
     rawBody: true,
   });
@@ -1430,6 +1432,7 @@ export async function createApp() {
     origin: process.env.WEB_ORIGIN || "http://localhost:5173",
     allowedHeaders: ["Authorization", "Content-Type", "Idempotency-Key"],
   });
+  await configureHostedWeb(app);
   app.enableShutdownHooks();
   return app;
 }

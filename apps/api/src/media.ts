@@ -1,3 +1,4 @@
+import { SupabasePrivateStorage } from "./supabase-storage";
 import { providerValue } from "./provider-runtime";
 import {
   BadRequestException,
@@ -23,7 +24,13 @@ import {
 } from "./domain";
 type File = { buffer: Buffer; originalname: string };
 export class Media {
-  constructor(readonly ops: Operations) {}
+  constructor(
+    readonly ops: Operations,
+    private readonly supabase: Pick<
+      SupabasePrivateStorage,
+      "upload" | "download"
+    > = new SupabasePrivateStorage(),
+  ) {}
   async allowed(
     c: Pick<PoolClient, "query">,
     a: Actor,
@@ -207,6 +214,8 @@ export class Media {
                 "Cloud attachment checksum does not match",
               );
           }
+        } else if (driver === "supabase") {
+          await this.supabase.upload(storageKey, buffer, contentType, sha256);
         } else
           throw new ServiceUnavailableException(
             "Document storage driver is invalid",
@@ -280,6 +289,8 @@ export class Media {
           row.id,
         ),
       );
+    } else if (row.storage_driver === "supabase") {
+      data = await this.supabase.download(row.storage_key);
     } else {
       if (!providerValue("GCS_BUCKET"))
         throw new ServiceUnavailableException(

@@ -1,5 +1,8 @@
 # Deployment and operations requirements
 
+The current starter choice is [free-tier hosting](FREE_HOSTING_SETUP.md): Firebase Spark sign-in, Render Free for web/API, and Supabase Free for PostgreSQL/private storage. The Google Cloud Run/Cloud SQL/GCS instructions below remain a paid alternative for later; they are not required for the chosen trial route. Free quotas/availability and actual deployed acceptance must be reviewed before customer launch.
+
+
 No cloud resources have been created or deployed. No production release has been made.
 
 ## Development / testing / production isolation

@@ -1,14 +1,31 @@
+import { supabaseOrigin } from "./supabase-storage";
 import {
   BadRequestException,
   ConflictException,
   ServiceUnavailableException,
 } from "@nestjs/common";
-import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+import {
+  createCipheriv,
+  createDecipheriv,
+  randomBytes,
+  hkdfSync,
+} from "node:crypto";
 import { z } from "zod";
 import { Actor, Operations, parse, permit, OFFICE, FINANCE } from "./domain";
 import { PROVIDERS, setProviderRuntime } from "./provider-runtime";
 function masterKey() {
   const input = process.env.PROVIDER_SETTINGS_KEY || "";
+  const seed = process.env.PROVIDER_SETTINGS_SEED || "";
+  if (!input && /^[A-Za-z0-9_+=\/-]{32,256}$/.test(seed))
+    return Buffer.from(
+      hkdfSync(
+        "sha256",
+        Buffer.from(seed),
+        Buffer.from("CoreWaste provider settings v1"),
+        Buffer.from("stored-provider-credentials"),
+        32,
+      ),
+    );
   const key = Buffer.from(input, "base64");
   if (key.length !== 32 || key.toString("base64") !== input)
     throw new ServiceUnavailableException(
@@ -206,10 +223,17 @@ export class ProviderSettings {
         throw new BadRequestException(
           "Use an international sender phone number",
         );
+      if (field.name === "SUPABASE_URL" && value) {
+        try {
+          supabaseOrigin(value);
+        } catch {
+          throw new BadRequestException("Use the Supabase project HTTPS URL");
+        }
+      }
       if (
         field.name === "STORAGE_DRIVER" &&
         process.env.NODE_ENV === "production" &&
-        value !== "gcs"
+        !["gcs", "supabase"].includes(value)
       )
         throw new BadRequestException(
           "Production attachments require private cloud storage",
@@ -269,6 +293,20 @@ export class ProviderSettings {
               throw new BadRequestException(
                 "Complete required provider fields before activation",
               );
+        if (b.enabled && id === "storage") {
+          const driver = config.STORAGE_DRIVER || process.env.STORAGE_DRIVER;
+          const required =
+            driver === "supabase"
+              ? ["SUPABASE_URL", "SUPABASE_BUCKET", "SUPABASE_SERVICE_ROLE_KEY"]
+              : driver === "gcs"
+                ? ["GCS_BUCKET"]
+                : [];
+          for (const name of required)
+            if (!(config[name] || secrets[name] || process.env[name]))
+              throw new BadRequestException(
+                "Complete the selected private storage provider fields",
+              );
+        }
         const row = (
           await c.query(
             "INSERT INTO provider_settings(provider,enabled,config,secrets,updated_by) VALUES($1,$2,$3,$4,$5) ON CONFLICT(provider) DO UPDATE SET enabled=EXCLUDED.enabled,config=EXCLUDED.config,secrets=EXCLUDED.secrets,updated_by=EXCLUDED.updated_by,updated_at=now(),version=provider_settings.version+1 RETURNING provider,enabled,version",

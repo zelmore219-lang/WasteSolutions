@@ -190,3 +190,37 @@ test("public Firebase configuration stays isolated in emulator mode and exposes 
     else process.env.FIREBASE_AUTH_EMULATOR_HOST = oldEmulator;
   }
 });
+
+test("managed hosting can derive a stable encryption key from a private generated seed", () => {
+  const oldKey = process.env.PROVIDER_SETTINGS_KEY,
+    oldSeed = process.env.PROVIDER_SETTINGS_SEED;
+  try {
+    delete process.env.PROVIDER_SETTINGS_KEY;
+    const seed = randomBytes(32).toString("hex");
+    process.env.PROVIDER_SETTINGS_SEED = seed;
+    const encrypted = sealProviderSecret(
+      "email",
+      "RESEND_API_KEY",
+      "seed-fixture",
+    );
+    assert.equal(
+      openProviderSecret("email", "RESEND_API_KEY", encrypted),
+      "seed-fixture",
+    );
+    process.env.PROVIDER_SETTINGS_SEED = randomBytes(32).toString("hex");
+    assert.throws(
+      () => openProviderSecret("email", "RESEND_API_KEY", encrypted),
+      /locked/,
+    );
+    process.env.PROVIDER_SETTINGS_SEED = seed;
+    assert.equal(
+      openProviderSecret("email", "RESEND_API_KEY", encrypted),
+      "seed-fixture",
+    );
+  } finally {
+    if (oldKey === undefined) delete process.env.PROVIDER_SETTINGS_KEY;
+    else process.env.PROVIDER_SETTINGS_KEY = oldKey;
+    if (oldSeed === undefined) delete process.env.PROVIDER_SETTINGS_SEED;
+    else process.env.PROVIDER_SETTINGS_SEED = oldSeed;
+  }
+});

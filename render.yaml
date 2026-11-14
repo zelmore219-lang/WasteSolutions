@@ -1,0 +1,37 @@
+# Free web/API tier. Database and private files are in the user's separate Supabase free project.
+services:
+  - type: web
+    name: corewaste
+    runtime: docker
+    plan: free
+    region: virginia
+    dockerfilePath: ./Dockerfile.free
+    healthCheckPath: /api/health
+    autoDeploy: false
+    envVars:
+      - key: TRUST_PROXY_HOPS
+        value: '1'
+      - key: NODE_ENV
+        value: production
+      - key: FIREBASE_PROJECT_ID
+        value: wastesoloutions
+      - key: VITE_FIREBASE_AUTH_DOMAIN
+        value: wastesoloutions.firebaseapp.com
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: PROVIDER_SETTINGS_SEED
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: STORAGE_DRIVER
+        value: supabase
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_BUCKET
+        value: corewaste-private
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: NOTIFICATIONS_WORKER_ENABLED
+        value: 'false'
+      - key: PAYMENTS_MODE
+        value: test

@@ -4,6 +4,10 @@ CoreWaste's single-company waste operations system. React/TypeScript office and 
 
 **Development milestone, not a finished or production-ready system.** See [feature and acceptance status](docs/FEATURES.md), [architecture](docs/ARCHITECTURE.md), and [deployment requirements](docs/DEPLOYMENT.md). No sample customer records or simulated payment success are installed.
 
+## Free-tier hosting setup
+
+The active starter route is **Firebase Spark authentication + Render Free web/API + Supabase Free database/private files**. See [step-by-step setup](docs/FREE_HOSTING_SETUP.md). The root `render.yaml` and `Dockerfile.free` prepare that route. Live deployment still requires the owner’s private service configuration and acceptance checks.
+
 ## Demo login, icon and provider settings
 
 Version0.3.0 adds the logo-based app icon and [Settings → Providers](docs/PROVIDER_SETTINGS.md). The isolated emulator accepts **demo / password1** with dispatcher permissions; production access is unchanged. Provider secrets require the backend encryption key; apply migration048. This does not make the hosted Windows client an offline demo.
